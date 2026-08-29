@@ -23,8 +23,9 @@ O Windows pode avisar que a app não é reconhecida (não está assinada). Escol
 - Copia um banco para outro (ou para um intervalo)
 - Guarda e abre ficheiros `.choco.json` no PC
 - Modos do CubeSuite (1–12), incluindo **Advanced Custom 1 e 2**
+- **Cenas Matribox II Pro**: ecrã inicial para mapear bancos/patches e ligar/desligar os 12 módulos (CC 43–54) nos switches do Chocolate
 
-Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSuite](http://www.m-vave.com/appdownload) oficial.
+Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSuite](http://www.m-vave.com/appdownload) oficial. MIDI da Matribox conforme o [manual firmware 1.2.2](https://sonicake.oss-accelerate.aliyuncs.com/res/JIyz39IVZe/Matribox_II_PRO_Online_Manual_EN_Firmware_V1.2.2.pdf).
 
 ---
 
@@ -41,7 +42,21 @@ Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSu
 
 Se não ligar: troca de cabo, porta USB, ou fecha o CubeSuite (só uma app de cada vez no MIDI).
 
-### 2. Ler o que está no pedal
+### 2. Cenas Matribox II (Chocolate a controlar a pedaleira)
+
+1. No ecrã inicial escolhe **Sonicake Matribox II**.
+2. Liga a **Matribox** por USB (Global → MIDI → MIDI In Source = USB ou Mixed).
+3. Liga o **Chocolate** (switch U).
+4. **Ler Chocolate** se já tiveres bancos; senão parte do template.
+5. Na árvore, escolhe o banco/patch da Matribox (01-A … 60-D).
+6. À direita, para cada módulo (DYN, AMP, DLY, …) escolhe **Off**, **On** ou **Não enviar**.
+7. **Aplicar neste switch**:  
+   - **B Bank (longo)** = CC 0 + PC (escolhe o preset na Matribox)  
+   - **A Bank (curto)** = CC 43–54 com o estado de cada efeito  
+8. Ou **A–D = patches A–D deste banco** para mapear os quatro switches de uma vez.
+9. **Testar na Matribox** envia o MIDI já; **Gravar no Chocolate** grava no pedal.
+
+### 3. Ler o que está no pedal
 
 1. Clica **Ler do Chocolate**.
 2. Espera pela leitura (pode demorar; o log em baixo mostra o progresso).
@@ -50,7 +65,7 @@ Se não ligar: troca de cabo, porta USB, ou fecha o CubeSuite (só uma app de ca
 
 Confirma o **Modo** no topo (por exemplo *4. Advanced Custom 1* ou *5. Advanced Custom 2*). O modo 5 é o que usa **E/F** para mudar de banco no pedal.
 
-### 3. Editar um banco
+### 4. Editar um banco
 
 1. Escolhe o grupo na lista da esquerda.
 2. Dá um **nome** ao banco (só no editor / JSON; o pedal não mostra este nome).
@@ -65,7 +80,7 @@ Confirma o **Modo** no topo (por exemplo *4. Advanced Custom 1* ou *5. Advanced 
    - **Note On / Note Off**
    - **SysEx** — bytes em hexadecimal
 
-### 4. Copiar um banco
+### 5. Copiar um banco
 
 1. Menu **Bancos** → **Copiar este banco…** (ou o botão no painel).
 2. Escolhe origem e destino.
@@ -73,7 +88,7 @@ Confirma o **Modo** no topo (por exemplo *4. Advanced Custom 1* ou *5. Advanced 
 
 Útil para repetir o mesmo patch em vários grupos e depois só mudar o PC/CC.
 
-### 5. Gravar no pedal
+### 6. Gravar no pedal
 
 1. Clica **Gravar no Chocolate**.
 2. Não desligues o USB até o log indicar que gravou.
@@ -81,13 +96,13 @@ Confirma o **Modo** no topo (por exemplo *4. Advanced Custom 1* ou *5. Advanced 
 
 **Gravar substitui a memória do pedal.** Guarda primeiro um JSON no PC (**Arquivo → Salvar**).
 
-### 6. Guardar no computador
+### 7. Guardar no computador
 
 - **Arquivo → Salvar / Salvar como** — ficheiro `.choco.json` (podes versionar no Git ou enviar a um amigo).
 - **Arquivo → Abrir** — carrega um JSON e, se quiseres, grava no pedal.
 - **Arquivo → Novo** — template inicial (não lê o pedal).
 
-### 7. TRS e quantidade de bancos
+### 8. TRS e quantidade de bancos
 
 - **TRS MIDI** vs expressão — jack traseiro.
 - **Qtd. de bancos** — quantos grupos a lista mostra (no dump USB o Chocolate Plus usa até 8 neste editor).

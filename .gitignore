@@ -17,3 +17,7 @@ last-dump.bin
 # Extração temporária do CubeSuite
 _tmp_cubesuite/
 Form1.resx
+
+# Sonda MIDI local
+tools/MatriboxProbe/bin/
+tools/MatriboxProbe/obj/

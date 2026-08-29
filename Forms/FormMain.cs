@@ -16,6 +16,9 @@ public partial class FormMain : Form
     public FormMain()
     {
         InitializeComponent();
+        var mnuInicio = new ToolStripMenuItem("← Início");
+        mnuInicio.Click += (_, _) => Close();
+        menuStrip.Items.Insert(0, mnuInicio);
         _usb.Log += (_, line) => BeginInvoke(() => AppendLog(line));
         LoadModes();
         RefreshMidiPorts();
