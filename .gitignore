@@ -1,0 +1,19 @@
+# Build
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.DotSettings.user
+
+# Publish / instalador gerados
+deploy/out/
+deploy/dist/
+
+# Dumps USB locais
+last-dump.bin
+*.bin
+
+# Extração temporária do CubeSuite
+_tmp_cubesuite/
+Form1.resx
