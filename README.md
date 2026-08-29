@@ -6,12 +6,9 @@ Editor Windows (gratuito) para o pedal **M-VAVE Chocolate Plus** (`FootCtrlPlus`
 
 ## Download
 
-| Ficheiro | O que é |
-| --- | --- |
-| **[ChocolatePlusEditor.exe](https://github.com/mguande/ChocolateEditor/releases/latest/download/ChocolatePlusEditor.exe)** | App portátil (um só ficheiro: descarrega e abre) |
-| **[ChocolatePlusEditor-Setup.exe](https://github.com/mguande/ChocolateEditor/releases/latest/download/ChocolatePlusEditor-Setup.exe)** | Instalador (opcional: menu Iniciar + atalho) |
+**[Descarregar ChocolatePlusEditor.exe](https://github.com/mguande/ChocolateEditor/releases/latest/download/ChocolatePlusEditor.exe)** — um só ficheiro (~50 MB), Windows 10/11 64-bit. Não precisa de instalar o .NET: descarrega e abre.
 
-Última versão: [Releases](https://github.com/mguande/ChocolateEditor/releases/latest)
+Todas as versões: [Releases](https://github.com/mguande/ChocolateEditor/releases/latest)
 
 O Windows pode avisar que a app não é reconhecida (não está assinada). Escolhe **Mais informações** → **Executar na mesma**.
 
