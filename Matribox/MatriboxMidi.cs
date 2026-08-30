@@ -100,6 +100,17 @@ public static class MatriboxMidi
         return true;
     }
 
+    /// <summary>0 = sem default (vazio), 1 = Off, 2 = On no preset .prst.</summary>
+    public static int PresetEffectChoice(IReadOnlyList<MatriboxChainSlot>? chain, int moduleIndex0)
+    {
+        if (chain is null || moduleIndex0 < 0 || moduleIndex0 >= chain.Count || chain[moduleIndex0].Empty)
+        {
+            return 0;
+        }
+
+        return chain[moduleIndex0].On ? 2 : 1;
+    }
+
     /// <summary>0 = não enviar, 1 = Off, 2 = On.</summary>
     public static int EffectChoice(IEnumerable<MidiCommand> commands, int moduleIndex0)
     {

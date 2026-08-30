@@ -13,10 +13,7 @@ public static class MatriboxPresetStore
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    public static string FilePath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "ChocolateEditor",
-        "matribox-presets.json");
+    public static string FilePath => AppConfig.File("matribox-presets.json");
 
     public static List<MatriboxPresetInfo> Load()
     {

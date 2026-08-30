@@ -14,10 +14,14 @@ internal static class MatriboxLzo
     ];
 
     private static DecompressFn? _decompress;
+    private static CompressFn? _compress;
     private static bool _tried;
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     private delegate int DecompressFn(IntPtr input, int size, IntPtr output);
+
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    private delegate int CompressFn(IntPtr input, int size, IntPtr output);
 
     [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern bool SetDllDirectory(string? lpPathName);
@@ -42,6 +46,39 @@ internal static class MatriboxLzo
             }
 
             raw = dest[..n];
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+        finally
+        {
+            pinIn.Free();
+            pinOut.Free();
+        }
+    }
+
+    public static bool TryCompress(byte[] raw, out byte[] compressed)
+    {
+        compressed = [];
+        if (raw.Length == 0 || !Ensure() || _compress is null)
+        {
+            return false;
+        }
+
+        byte[] dest = new byte[Math.Max(raw.Length * 2, 65536)];
+        var pinIn = GCHandle.Alloc(raw, GCHandleType.Pinned);
+        var pinOut = GCHandle.Alloc(dest, GCHandleType.Pinned);
+        try
+        {
+            int n = _compress(pinIn.AddrOfPinnedObject(), raw.Length, pinOut.AddrOfPinnedObject());
+            if (n <= 0 || n > dest.Length)
+            {
+                return false;
+            }
+
+            compressed = dest[..n];
             return true;
         }
         catch
@@ -80,6 +117,11 @@ internal static class MatriboxLzo
             var lib = NativeLibrary.Load(path);
             _decompress = Marshal.GetDelegateForFunctionPointer<DecompressFn>(
                 NativeLibrary.GetExport(lib, "toolStartDecompress"));
+            if (NativeLibrary.TryGetExport(lib, "toolStartCompress", out nint compressPtr))
+            {
+                _compress = Marshal.GetDelegateForFunctionPointer<CompressFn>(compressPtr);
+            }
+
             return true;
         }
         catch

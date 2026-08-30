@@ -11,9 +11,9 @@
     <ApplicationTitle>Chocolate Plus Editor</ApplicationTitle>
     <Product>Chocolate Plus Editor</Product>
     <Description>Editor de bancos para M-VAVE Chocolate Plus (FootCtrlPlus)</Description>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.2.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
     <Authors>mguande</Authors>
     <ApplicationIcon>images\chocolate.ico</ApplicationIcon>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
@@ -35,6 +35,9 @@
     <None Update="images\choco.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+    </None>
+    <None Update="config\*.modelo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

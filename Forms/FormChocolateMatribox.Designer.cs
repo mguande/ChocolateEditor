@@ -375,7 +375,7 @@ partial class FormChocolateMatribox
         lblFxHint.Name = "lblFxHint";
         lblFxHint.Size = new Size(628, 36);
         lblFxHint.TabIndex = 1;
-        lblFxHint.Text = "Estados que este switch manda no toque curto (CC 43–54).";
+        lblFxHint.Text = "Toque curto: só manda o que for diferente do patch. Não enviar = estado da Matribox.";
         // 
         // panelFxScroll
         // 
@@ -390,8 +390,8 @@ partial class FormChocolateMatribox
         // tableFx
         // 
         tableFx.ColumnCount = 2;
-        tableFx.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
-        tableFx.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+        tableFx.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48F));
+        tableFx.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52F));
         tableFx.Location = new Point(0, 0);
         tableFx.Name = "tableFx";
         tableFx.Size = new Size(600, 336);

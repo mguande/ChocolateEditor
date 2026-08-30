@@ -22,6 +22,7 @@ partial class FormLauncher
         btnChocolate = new Button();
         btnScene = new Button();
         btnMatribox = new Button();
+        btnAi = new Button();
         lblHint = new Label();
         SuspendLayout();
         // 
@@ -89,22 +90,38 @@ partial class FormLauncher
         btnMatribox.UseVisualStyleBackColor = false;
         btnMatribox.Click += btnMatribox_Click;
         // 
+        // btnAi
+        // 
+        btnAi.BackColor = Color.FromArgb(52, 52, 64);
+        btnAi.FlatAppearance.BorderSize = 0;
+        btnAi.FlatStyle = FlatStyle.Flat;
+        btnAi.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        btnAi.ForeColor = Color.White;
+        btnAi.Location = new Point(40, 288);
+        btnAi.Name = "btnAi";
+        btnAi.Size = new Size(200, 88);
+        btnAi.TabIndex = 3;
+        btnAi.Text = "Prompt IA\n\nChatGPT / Claude / Gemini";
+        btnAi.UseVisualStyleBackColor = false;
+        btnAi.Click += btnAi_Click;
+        // 
         // lblHint
         // 
         lblHint.ForeColor = Color.FromArgb(90, 90, 90);
-        lblHint.Location = new Point(40, 288);
+        lblHint.Location = new Point(40, 392);
         lblHint.Name = "lblHint";
         lblHint.Size = new Size(640, 48);
         lblHint.TabIndex = 0;
-        lblHint.Text = "Chocolate × Matribox: mapeia os switches. Configuração Matribox: importa os .prst.\nChocolate: switch U + USB-C de dados. Não abras o CubeSuite ao mesmo tempo.";
+        lblHint.Text = "Chocolate × Matribox: mapeia os switches. Configuração Matribox: importa os .prst.\nPrompt IA: envia um prompt e mostra a resposta. Chocolate: switch U + USB-C de dados.";
         // 
         // FormLauncher
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(248, 244, 238);
-        ClientSize = new Size(720, 380);
+        ClientSize = new Size(720, 460);
         Controls.Add(lblHint);
+        Controls.Add(btnAi);
         Controls.Add(btnMatribox);
         Controls.Add(btnScene);
         Controls.Add(btnChocolate);
@@ -124,5 +141,6 @@ partial class FormLauncher
     private Button btnChocolate;
     private Button btnScene;
     private Button btnMatribox;
+    private Button btnAi;
     private Label lblHint;
 }

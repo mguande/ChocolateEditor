@@ -329,7 +329,7 @@ public partial class FormMain : Form
             int n = ChocolateMemoryMap.CountMessages(config);
             AppendLog($"Modo lido: {UiLabels.Mode(config.Mode)}");
             AppendLog(n == 0
-                ? "Leitura USB ok, mas não achei listas MIDI no formato CubeSuite. O dump está em %LocalAppData%\\ChocolateEditor\\last-dump.bin."
+                ? "Leitura USB ok, mas não achei listas MIDI no formato CubeSuite. O dump está em " + AppConfig.File("last-dump.bin") + "."
                 : $"Leitura USB: {n} mensagens. Banco 1 = Switches A–D; os outros bancos vêm a seguir no dump.");
         }
         catch (Exception ex)

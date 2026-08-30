@@ -16,6 +16,9 @@ public partial class FormLauncher : Form
     private void btnMatribox_Click(object sender, EventArgs e)
         => OpenEditor(new FormMatribox());
 
+    private void btnAi_Click(object sender, EventArgs e)
+        => OpenEditor(new FormAiPrompt());
+
     private void OpenEditor(Form editor)
     {
         Hide();

@@ -259,8 +259,8 @@ public partial class FormChocolateMatribox : Form
 
         SetEffectsEnabled(TryCurrentGroup(out _));
         lblFxHint.Text = index == 0
-            ? "A · curto manda On/Off dos efeitos. A · longo (segurar) escolhe o patch da Matribox."
-            : $"Switch {(char)('A' + index)} · curto manda On/Off dos efeitos do patch escolhido no A.";
+            ? "A · curto só manda efeitos diferentes do patch. A · longo escolhe o patch."
+            : $"Switch {(char)('A' + index)} · curto só manda o que for diferente do patch da Matribox.";
         LoadFromConfig();
     }
 
@@ -334,33 +334,59 @@ public partial class FormChocolateMatribox : Form
 
         chkStomp.Checked = MatriboxMidi.HasStomp(group.A.ShortPress);
         ApplyPatchChainToLabels();
+        var chain = CurrentPatchChain();
         var cmds = SwitchCommands(CurrentSwitch());
         for (int i = 0; i < _fx.Length; i++)
         {
-            _fx[i].SelectedIndex = MatriboxMidi.EffectChoice(cmds, i);
+            int stored = MatriboxMidi.EffectChoice(cmds, i);
+            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
+            _fx[i].SelectedIndex = stored != 0 && stored == preset ? 0 : stored;
         }
 
         UpdateHint();
         _loading = false;
     }
 
-    private void ApplyPatchChainToLabels()
+    private IReadOnlyList<MatriboxChainSlot>? CurrentPatchChain()
     {
         int index = SelectedPresetIndex;
-        var chain = index >= 0 && index < _presets.Count
-            ? _presets[index].Chain
-            : null;
+        return index >= 0 && index < _presets.Count ? _presets[index].Chain : null;
+    }
+
+    private static string EffectCaption(IReadOnlyList<MatriboxChainSlot>? chain, int moduleIndex)
+    {
+        if (chain is { Count: > 0 } && moduleIndex < chain.Count && !chain[moduleIndex].Empty)
+        {
+            return chain[moduleIndex].EffectName;
+        }
+
+        return $"Slot {moduleIndex + 1}";
+    }
+
+    private void ApplyPatchChainToLabels()
+    {
+        var chain = CurrentPatchChain();
+        bool prev = _loading;
+        _loading = true;
         for (int i = 0; i < _fxLabels.Length; i++)
         {
+            string name = EffectCaption(chain, i);
             if (chain is { Count: > 0 } && i < chain.Count && !chain[i].Empty)
             {
-                _fxLabels[i].Text = chain[i].NameLabel;
+                _fxLabels[i].Text = chain[i].Label;
             }
             else
             {
                 _fxLabels[i].Text = $"--  (CC {MatriboxMidi.ModuleCc(i)})";
             }
+
+            int keep = _fx[i].SelectedIndex;
+            _fx[i].Items.Clear();
+            _fx[i].Items.AddRange([$"Não enviar · {name}", $"Off · {name}", $"On · {name}"]);
+            _fx[i].SelectedIndex = keep is >= 0 and <= 2 ? keep : 0;
         }
+
+        _loading = prev;
     }
 
     private void UpdateHint()
@@ -465,23 +491,13 @@ public partial class FormChocolateMatribox : Form
         _loading = prev;
     }
 
-    private void ApplyMatriboxChainStatesToCombos(int presetIndex)
+    private void ApplyMatriboxChainStatesToCombos()
     {
         bool prev = _loading;
         _loading = true;
-        var chain = presetIndex >= 0 && presetIndex < _presets.Count
-            ? _presets[presetIndex].Chain
-            : null;
         for (int i = 0; i < _fx.Length; i++)
         {
-            if (chain is { Count: > 0 } && i < chain.Count && !chain[i].Empty)
-            {
-                _fx[i].SelectedIndex = chain[i].On ? 2 : 1;
-            }
-            else
-            {
-                _fx[i].SelectedIndex = 0;
-            }
+            _fx[i].SelectedIndex = 0;
         }
 
         _loading = prev;
@@ -491,7 +507,7 @@ public partial class FormChocolateMatribox : Form
     {
         int ch = (int)numChannel.Value;
         int presetIndex = SelectedPresetIndex;
-        ApplyMatriboxChainStatesToCombos(presetIndex);
+        ApplyMatriboxChainStatesToCombos();
         var effects = BuildEffectCommands(ch);
         WriteAMapping(group, ch, effects);
         foreach (var sw in group.Switches.Skip(1))
@@ -510,21 +526,100 @@ public partial class FormChocolateMatribox : Form
 
     private List<MidiCommand> BuildEffectCommands(int channel)
     {
+        var chain = CurrentPatchChain();
         var list = new List<MidiCommand>();
         for (int i = 0; i < _fx.Length; i++)
         {
             int sel = _fx[i].SelectedIndex;
-            if (sel == 1)
+            if (sel is not (1 or 2))
             {
-                list.Add(MatriboxMidi.ModuleOnOff(i, false, channel));
+                continue;
             }
-            else if (sel == 2)
+
+            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
+            if (preset != 0 && sel == preset)
             {
-                list.Add(MatriboxMidi.ModuleOnOff(i, true, channel));
+                continue;
             }
+
+            list.Add(MatriboxMidi.ModuleOnOff(i, sel == 2, channel));
         }
 
         return list;
+    }
+
+    private bool SlimRedundantEffects()
+    {
+        bool changed = false;
+        _config.EnsureBankCount();
+        foreach (var group in _config.Banks.Take(_config.BankCount))
+        {
+            if (!TryPatchOfGroup(group, out int bank, out int slot))
+            {
+                continue;
+            }
+
+            int index = (bank - 1) * 4 + slot;
+            var chain = index >= 0 && index < _presets.Count ? _presets[index].Chain : null;
+            if (chain is null)
+            {
+                continue;
+            }
+
+            foreach (var sw in group.Switches)
+            {
+                var shortPress = StripMatchingModuleCcs(sw.ShortPress, chain);
+                var longPress = StripMatchingModuleCcs(sw.LongPress, chain);
+                if (!SameCommands(sw.ShortPress, shortPress))
+                {
+                    sw.ShortPress = shortPress;
+                    changed = true;
+                }
+
+                if (!SameCommands(sw.LongPress, longPress))
+                {
+                    sw.LongPress = longPress;
+                    changed = true;
+                }
+            }
+        }
+
+        return changed;
+    }
+
+    private static List<MidiCommand> StripMatchingModuleCcs(
+        List<MidiCommand> commands, IReadOnlyList<MatriboxChainSlot> chain)
+    {
+        return commands.Where(cmd =>
+        {
+            if (!IsEffectCc(cmd))
+            {
+                return true;
+            }
+
+            int i = cmd.Data1 - 43;
+            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
+            int sent = cmd.Data2 >= 64 ? 2 : 1;
+            return preset == 0 || sent != preset;
+        }).ToList();
+    }
+
+    private static bool SameCommands(List<MidiCommand> a, List<MidiCommand> b)
+    {
+        if (a.Count != b.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < a.Count; i++)
+        {
+            if (a[i].Type != b[i].Type || a[i].Data1 != b[i].Data1 || a[i].Data2 != b[i].Data2)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
@@ -624,8 +719,9 @@ public partial class FormChocolateMatribox : Form
             FillChocolateBanks();
             _loading = false;
             SetWorkspaceEnabled(true);
+            bool slimmed = SlimRedundantEffects();
             LoadFromConfig();
-            StyleSave(false);
+            StyleSave(slimmed);
         }
         catch (Exception ex)
         {
@@ -656,8 +752,9 @@ public partial class FormChocolateMatribox : Form
             _loading = true;
             FillChocolateBanks();
             _loading = false;
+            bool slimmed = SlimRedundantEffects();
             LoadFromConfig();
-            StyleSave(false);
+            StyleSave(slimmed);
         }
         catch (Exception ex)
         {

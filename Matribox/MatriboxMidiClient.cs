@@ -416,11 +416,7 @@ public sealed class MatriboxMidiClient : IDisposable
     {
         try
         {
-            string dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "ChocolateEditor");
-            Directory.CreateDirectory(dir);
-            File.WriteAllBytes(Path.Combine(dir, "last-matribox-sysex.bin"), data);
+            File.WriteAllBytes(AppConfig.File("last-matribox-sysex.bin"), data);
         }
         catch
         {

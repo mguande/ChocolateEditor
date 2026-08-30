@@ -1,0 +1,10 @@
+{
+  "openAiApiKey": "",
+  "openAiModel": "gpt-4o-mini",
+  "claudeApiKey": "",
+  "claudeModel": "claude-sonnet-4-5",
+  "geminiApiKey": "",
+  "geminiModel": "gemini-2.5-flash",
+  "lastProvider": 0,
+  "includeMatriboxManual": false
+}

@@ -10,8 +10,17 @@ obj/
 deploy/out/
 deploy/dist/
 
-# Dumps USB locais
+# Exemplos no Git: config/*.modelo
+# Locais (mesmos nomes de sempre) — não sobem
+config/*.json
+config/*.bin
+config/*.tmp
+config/*.bak.json
+ai-settings.json
+matribox-presets.json
+matribox-presets.bak.json
 last-dump.bin
+last-matribox-sysex.bin
 *.bin
 
 # Extração temporária do CubeSuite

@@ -251,10 +251,7 @@ public sealed class ChocolateUsbClient : IDisposable
 
         RaiseLog($"Dump: {dump.Length} bytes, {failed} blocos sem resposta. Modo EEPROM 0x{dump[0]:X2}");
 
-        var dumpPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "ChocolateEditor",
-            "last-dump.bin");
+        var dumpPath = AppConfig.File("last-dump.bin");
         Directory.CreateDirectory(Path.GetDirectoryName(dumpPath)!);
         File.WriteAllBytes(dumpPath, dump);
         RaiseLog("Dump salvo em " + dumpPath);

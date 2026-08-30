@@ -507,12 +507,22 @@ public sealed class MatriboxPresetInfo
         : $"{SlotLabel}  {Name}";
 }
 
+public sealed class MatriboxParamValue
+{
+    public string Name { get; init; } = "";
+    public int Id { get; init; }
+    public int Value { get; init; }
+    public int Min { get; init; }
+    public int Max { get; init; } = 100;
+}
+
 public sealed class MatriboxChainSlot
 {
     public int Position { get; init; }
     public int ModuleType { get; init; } = -1;
     public int Algorithm { get; init; }
     public bool On { get; init; }
+    public IReadOnlyList<MatriboxParamValue> Parameters { get; init; } = [];
     public bool Empty => ModuleType < 0 || ModuleType > 15;
     public string Label
     {
@@ -540,11 +550,24 @@ public sealed class MatriboxChainSlot
                 return $"--  (CC {43 + Position})";
             }
 
+            return $"{EffectName}  (CC {43 + Position})";
+        }
+    }
+
+    /// <summary>Nome curto do efeito (tipo + algoritmo), para os combos On/Off.</summary>
+    public string EffectName
+    {
+        get
+        {
+            if (Empty)
+            {
+                return $"Slot {Position + 1}";
+            }
+
             string alg = MatriboxAlgCatalog.Name(Algorithm);
-            string head = string.IsNullOrWhiteSpace(alg)
+            return string.IsNullOrWhiteSpace(alg)
                 ? HotoneSysex.ModuleName(ModuleType)
                 : $"{HotoneSysex.ModuleName(ModuleType)}  {alg}";
-            return $"{head}  (CC {43 + Position})";
         }
     }
 }
