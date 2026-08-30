@@ -23,6 +23,7 @@ partial class FormLauncher
         btnScene = new Button();
         btnMatribox = new Button();
         btnAi = new Button();
+        btnConfig = new Button();
         lblHint = new Label();
         SuspendLayout();
         // 
@@ -105,6 +106,21 @@ partial class FormLauncher
         btnAi.UseVisualStyleBackColor = false;
         btnAi.Click += btnAi_Click;
         // 
+        // btnConfig
+        // 
+        btnConfig.BackColor = Color.FromArgb(72, 64, 56);
+        btnConfig.FlatAppearance.BorderSize = 0;
+        btnConfig.FlatStyle = FlatStyle.Flat;
+        btnConfig.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        btnConfig.ForeColor = Color.White;
+        btnConfig.Location = new Point(256, 288);
+        btnConfig.Name = "btnConfig";
+        btnConfig.Size = new Size(200, 88);
+        btnConfig.TabIndex = 4;
+        btnConfig.Text = "Configuração\n\nChaves IA e opções";
+        btnConfig.UseVisualStyleBackColor = false;
+        btnConfig.Click += btnConfig_Click;
+        // 
         // lblHint
         // 
         lblHint.ForeColor = Color.FromArgb(90, 90, 90);
@@ -112,7 +128,7 @@ partial class FormLauncher
         lblHint.Name = "lblHint";
         lblHint.Size = new Size(640, 48);
         lblHint.TabIndex = 0;
-        lblHint.Text = "Chocolate × Matribox: mapeia os switches. Configuração Matribox: importa os .prst.\nPrompt IA: envia um prompt e mostra a resposta. Chocolate: switch U + USB-C de dados.";
+        lblHint.Text = "Na primeira execução abre a configuração. Podes alterar depois neste ecrã.\nChocolate × Matribox: mapeia os switches. Prompt IA: gera patches. Chocolate: switch U + USB-C de dados.";
         // 
         // FormLauncher
         // 
@@ -121,6 +137,7 @@ partial class FormLauncher
         BackColor = Color.FromArgb(248, 244, 238);
         ClientSize = new Size(720, 460);
         Controls.Add(lblHint);
+        Controls.Add(btnConfig);
         Controls.Add(btnAi);
         Controls.Add(btnMatribox);
         Controls.Add(btnScene);
@@ -133,6 +150,7 @@ partial class FormLauncher
         Name = "FormLauncher";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Chocolate Plus Editor";
+        Shown += FormLauncher_Shown;
         ResumeLayout(false);
     }
 
@@ -142,5 +160,6 @@ partial class FormLauncher
     private Button btnScene;
     private Button btnMatribox;
     private Button btnAi;
+    private Button btnConfig;
     private Label lblHint;
 }

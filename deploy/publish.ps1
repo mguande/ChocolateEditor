@@ -27,6 +27,19 @@ if (-not (Test-Path $built)) {
     throw "Publish falhou: $built nao encontrado."
 }
 
+# Nunca empacotar configs locais (chaves, presets, dumps)
+Get-ChildItem $outDir -Recurse -Force -ErrorAction SilentlyContinue |
+    Where-Object {
+        $_.Name -in @(
+            "ai-settings.json",
+            "matribox-presets.json",
+            "matribox-presets.bak.json",
+            "last-dump.bin",
+            "last-matribox-sysex.bin"
+        ) -or $_.Name -like "*.modelo" -or $_.Name -eq "config"
+    } |
+    Remove-Item -Recurse -Force
+
 $portable = Join-Path $distDir $exeName
 Copy-Item $built $portable -Force
 Write-Host "Portatil: $portable"

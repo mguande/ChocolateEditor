@@ -39,7 +39,7 @@ partial class FormAiSettings
         lblHint.Name = "lblHint";
         lblHint.Size = new Size(520, 48);
         lblHint.TabIndex = 0;
-        lblHint.Text = "As chaves ficam só neste PC (%LocalAppData%\\ChocolateEditor\\ai-settings.json).\nChatGPT: platform.openai.com  ·  Claude: console.anthropic.com  ·  Gemini: aistudio.google.com";
+        lblHint.Text = "As chaves ficam só neste PC (%LocalAppData%\\ChocolateEditor\\ai-settings.json) e nunca vão no instalador.\nChatGPT: platform.openai.com  ·  Claude: console.anthropic.com  ·  Gemini: aistudio.google.com";
         // 
         // lblOpenAi
         // 
@@ -188,7 +188,7 @@ partial class FormAiSettings
         MinimizeBox = false;
         Name = "FormAiSettings";
         StartPosition = FormStartPosition.CenterParent;
-        Text = "Credenciais das IAs";
+        Text = "Configuração";
         ResumeLayout(false);
         PerformLayout();
     }

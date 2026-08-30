@@ -1,5 +1,5 @@
 #define MyAppName "Chocolate Plus Editor"
-#define MyAppVersion "1.2.0"
+#define MyAppVersion "1.2.1"
 #define MyAppPublisher "mguande"
 #define MyAppURL "https://github.com/mguande/ChocolateEditor"
 #define MyAppExeName "ChocolatePlusEditor.exe"

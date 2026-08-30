@@ -2,7 +2,7 @@
 
 Editor Windows (gratuito) para o pedal **M-VAVE Chocolate Plus** (`FootCtrlPlus`) e para cenas da **Sonicake Matribox II Pro**. Serve para ler, editar, copiar bancos e gravar a configuração no Chocolate por **USB MIDI**, mapear switches para patches/efeitos da Matribox, e gerar patches com IA.
 
-**Versão 1.2.0** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
+**Versão 1.2.1** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
 
 ## Download
 
@@ -38,7 +38,7 @@ Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSu
 1. No Chocolate Plus, põe o interruptor em **U** (USB).
 2. Usa um cabo USB-C **de dados** (não só de carga).
 3. No Windows, o dispositivo deve aparecer como **FootCtrlPlus**.
-4. Abre o Chocolate Plus Editor.
+4. Abre o Chocolate Plus Editor. Na **primeira execução** (ou se as chaves estiverem vazias) abre a tela de **Configuração**. Podes saltar e voltar depois pelo botão no ecrã inicial.
 5. Em **MIDI USB**, escolhe `FootCtrlPlus` (se não aparecer, clica **Atualizar**).
 6. Clica **Conectar**. O estado deve passar a *Chocolate detectado*.
 
@@ -66,13 +66,14 @@ Não dispares os 12 CC de uma vez em excesso: a Matribox pode sobrecarregar. O e
 
 ### 4. Prompt IA (gerar patch Matribox)
 
-1. No ecrã inicial escolhe **Prompt IA**.
-2. **Configurar** — cola as chaves de API (ChatGPT, Claude e/ou Gemini). Ficam só neste PC.
-3. Escreve o que queres (ex.: *som Nirvana, overdrive + delay curto*).
-4. Deixa **Gerar patch Matribox II Pro** marcado para a IA devolver a cadeia e os knobs.
-5. **Enviar manual e knobs** — desligado por omissão (prompt leve). Liga só se quiseres o manual completo e todos os knobs por algoritmo (mais pesado, melhor contexto).
-6. **Enviar** (ou Ctrl+Enter). A cadeia aparece com pedais/amp/cab e knobs.
-7. **Guardar .prst** — grava o patch e um `.txt` com a pergunta e a resposta. Copia o `.prst` para a pasta Patchs do editor Sonicake.
+1. Na primeira execução (ou com as chaves vazias) o editor pede as APIs. Também podes abrir **Configuração** no ecrã inicial.
+2. Cola as chaves (ChatGPT, Claude e/ou Gemini). Ficam só neste PC, nunca no instalador.
+3. No ecrã inicial escolhe **Prompt IA**.
+4. Escreve o que queres (ex.: *som Nirvana, overdrive + delay curto*).
+5. Deixa **Gerar patch Matribox II Pro** marcado para a IA devolver a cadeia e os knobs.
+6. **Enviar manual e knobs** — desligado por omissão (prompt leve). Liga só se quiseres o manual completo e todos os knobs por algoritmo (mais pesado, melhor contexto).
+7. **Enviar** (ou Ctrl+Enter). A cadeia aparece com pedais/amp/cab e knobs.
+8. **Guardar .prst** — grava o patch e um `.txt` com a pergunta e a resposta. Copia o `.prst` para a pasta Patchs do editor Sonicake.
 
 Modelos por omissão: `gpt-4o-mini`, `claude-sonnet-4-5`, `gemini-2.5-flash`.
 

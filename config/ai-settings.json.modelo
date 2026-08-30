@@ -6,5 +6,6 @@
   "geminiApiKey": "",
   "geminiModel": "gemini-2.5-flash",
   "lastProvider": 0,
-  "includeMatriboxManual": false
+  "includeMatriboxManual": false,
+  "setupCompleted": false
 }

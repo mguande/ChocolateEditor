@@ -4,8 +4,15 @@ namespace ChocolateEditor.Forms;
 
 public partial class FormAiSettings : Form
 {
-    public FormAiSettings()
+    private readonly bool _firstRun;
+
+    public FormAiSettings() : this(firstRun: false)
     {
+    }
+
+    public FormAiSettings(bool firstRun)
+    {
+        _firstRun = firstRun;
         InitializeComponent();
         var s = AiSettingsStore.Load();
         txtOpenAiKey.Text = s.OpenAiApiKey;
@@ -15,6 +22,12 @@ public partial class FormAiSettings : Form
         txtGeminiKey.Text = s.GeminiApiKey;
         txtGeminiModel.Text = s.ModelOf(AiProvider.Gemini);
         Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+        if (_firstRun)
+        {
+            Text = "Configuração inicial";
+            lblHint.Text = "Primeira execução: cola as chaves da IA (podes saltar e configurar depois no início).\nFicam só neste PC. ChatGPT: platform.openai.com  ·  Claude: console.anthropic.com  ·  Gemini: aistudio.google.com";
+            btnCancel.Text = "Agora não";
+        }
     }
 
     private void btnSave_Click(object sender, EventArgs e)
@@ -35,7 +48,8 @@ public partial class FormAiSettings : Form
                 ? "gemini-2.5-flash"
                 : txtGeminiModel.Text.Trim(),
             LastProvider = current.LastProvider,
-            IncludeMatriboxManual = current.IncludeMatriboxManual
+            IncludeMatriboxManual = current.IncludeMatriboxManual,
+            SetupCompleted = true
         });
         DialogResult = DialogResult.OK;
         Close();
@@ -43,6 +57,13 @@ public partial class FormAiSettings : Form
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
+        if (_firstRun)
+        {
+            var current = AiSettingsStore.Load();
+            current.SetupCompleted = true;
+            AiSettingsStore.Save(current);
+        }
+
         DialogResult = DialogResult.Cancel;
         Close();
     }

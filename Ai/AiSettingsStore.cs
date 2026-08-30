@@ -12,6 +12,10 @@ public sealed class AiSettings
     public string GeminiModel { get; set; } = "gemini-2.5-flash";
     public AiProvider LastProvider { get; set; } = AiProvider.ChatGpt;
     public bool IncludeMatriboxManual { get; set; }
+    public bool SetupCompleted { get; set; }
+
+    public bool HasAnyKey()
+        => HasKey(AiProvider.ChatGpt) || HasKey(AiProvider.Claude) || HasKey(AiProvider.Gemini);
 
     public bool HasKey(AiProvider provider) => provider switch
     {
@@ -65,5 +69,16 @@ public static class AiSettingsStore
         }
 
         File.WriteAllText(FilePath, JsonSerializer.Serialize(settings, JsonOptions));
+    }
+
+    public static bool NeedsSetup()
+    {
+        if (!File.Exists(FilePath))
+        {
+            return true;
+        }
+
+        var settings = Load();
+        return !settings.SetupCompleted && !settings.HasAnyKey();
     }
 }
