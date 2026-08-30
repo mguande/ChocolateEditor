@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
 partial class FormMatribox
@@ -24,14 +26,14 @@ partial class FormMatribox
         lblMatriboxHint = new Label();
         numChannel = new NumericUpDown();
         lblChannel = new Label();
-        btnRefresh = new Button();
-        btnConnectChocolate = new Button();
+        btnRefresh = new ForeverButton();
+        btnConnectChocolate = new ForeverButton();
         cmbChocolateMidi = new ComboBox();
         lblChocolateMidi = new Label();
-        btnConnectMatribox = new Button();
+        btnConnectMatribox = new ForeverButton();
         cmbMatriboxMidi = new ComboBox();
         lblMatriboxMidi = new Label();
-        btnInicio = new Button();
+        btnInicio = new ForeverButton();
         splitMain = new SplitContainer();
         splitLeft = new SplitContainer();
         lstChoco = new ListBox();
@@ -47,17 +49,17 @@ partial class FormMatribox
         panelBottom = new Panel();
         txtLog = new TextBox();
         panelBtnRow2 = new Panel();
-        btnWriteChocolate = new Button();
-        btnReadChocolate = new Button();
-        btnTestMatribox = new Button();
+        btnWriteChocolate = new ForeverButton();
+        btnReadChocolate = new ForeverButton();
+        btnTestMatribox = new ForeverButton();
         panelBtnRow1 = new Panel();
-        btnMapBank = new Button();
-        btnApply = new Button();
+        btnMapBank = new ForeverButton();
+        btnApply = new ForeverButton();
         panelFxTop = new Panel();
-        btnImportPrst = new Button();
-        btnScanMatribox = new Button();
-        btnAllOff = new Button();
-        btnAllOn = new Button();
+        btnImportPrst = new ForeverButton();
+        btnScanMatribox = new ForeverButton();
+        btnAllOff = new ForeverButton();
+        btnAllOn = new ForeverButton();
         chkStomp = new CheckBox();
         lblFx = new Label();
         panelScan.SuspendLayout();
@@ -159,20 +161,24 @@ partial class FormMatribox
         // 
         // btnRefresh
         // 
-        btnRefresh.Location = new Point(988, 13);
+        btnRefresh.Location = new Point(988, 12);
         btnRefresh.Name = "btnRefresh";
-        btnRefresh.Size = new Size(90, 26);
+        btnRefresh.Rounded = true;
+        btnRefresh.Size = new Size(90, 32);
         btnRefresh.TabIndex = 5;
         btnRefresh.Text = "Atualizar";
+        btnRefresh.TextColor = Color.White;
         btnRefresh.Click += btnRefresh_Click;
         // 
         // btnConnectChocolate
         // 
-        btnConnectChocolate.Location = new Point(832, 13);
+        btnConnectChocolate.Location = new Point(832, 12);
         btnConnectChocolate.Name = "btnConnectChocolate";
-        btnConnectChocolate.Size = new Size(150, 26);
+        btnConnectChocolate.Rounded = true;
+        btnConnectChocolate.Size = new Size(150, 32);
         btnConnectChocolate.TabIndex = 4;
         btnConnectChocolate.Text = "Conectar Chocolate";
+        btnConnectChocolate.TextColor = Color.White;
         btnConnectChocolate.Click += btnConnectChocolate_Click;
         // 
         // cmbChocolateMidi
@@ -194,11 +200,13 @@ partial class FormMatribox
         // 
         // btnConnectMatribox
         // 
-        btnConnectMatribox.Location = new Point(386, 13);
+        btnConnectMatribox.Location = new Point(386, 12);
         btnConnectMatribox.Name = "btnConnectMatribox";
-        btnConnectMatribox.Size = new Size(140, 26);
+        btnConnectMatribox.Rounded = true;
+        btnConnectMatribox.Size = new Size(150, 32);
         btnConnectMatribox.TabIndex = 2;
         btnConnectMatribox.Text = "Conectar Matribox";
+        btnConnectMatribox.TextColor = Color.White;
         btnConnectMatribox.Click += btnConnectMatribox_Click;
         // 
         // cmbMatriboxMidi
@@ -222,9 +230,11 @@ partial class FormMatribox
         // 
         btnInicio.Location = new Point(12, 12);
         btnInicio.Name = "btnInicio";
-        btnInicio.Size = new Size(80, 28);
+        btnInicio.Rounded = true;
+        btnInicio.Size = new Size(88, 32);
         btnInicio.TabIndex = 0;
         btnInicio.Text = "← Início";
+        btnInicio.TextColor = Color.White;
         btnInicio.Click += btnInicio_Click;
         // 
         // splitMain
@@ -408,27 +418,33 @@ partial class FormMatribox
         btnWriteChocolate.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         btnWriteChocolate.Location = new Point(292, 2);
         btnWriteChocolate.Name = "btnWriteChocolate";
+        btnWriteChocolate.Rounded = true;
         btnWriteChocolate.Size = new Size(148, 28);
         btnWriteChocolate.TabIndex = 2;
         btnWriteChocolate.Text = "Gravar no Chocolate";
+        btnWriteChocolate.TextColor = Color.White;
         btnWriteChocolate.Click += btnWriteChocolate_Click;
         // 
         // btnReadChocolate
         // 
         btnReadChocolate.Location = new Point(146, 2);
         btnReadChocolate.Name = "btnReadChocolate";
+        btnReadChocolate.Rounded = true;
         btnReadChocolate.Size = new Size(140, 28);
         btnReadChocolate.TabIndex = 1;
         btnReadChocolate.Text = "Ler Chocolate";
+        btnReadChocolate.TextColor = Color.White;
         btnReadChocolate.Click += btnReadChocolate_Click;
         // 
         // btnTestMatribox
         // 
         btnTestMatribox.Location = new Point(0, 2);
         btnTestMatribox.Name = "btnTestMatribox";
+        btnTestMatribox.Rounded = true;
         btnTestMatribox.Size = new Size(140, 28);
         btnTestMatribox.TabIndex = 0;
         btnTestMatribox.Text = "Testar na Matribox";
+        btnTestMatribox.TextColor = Color.White;
         btnTestMatribox.Click += btnTestMatribox_Click;
         // 
         // panelBtnRow1
@@ -446,18 +462,22 @@ partial class FormMatribox
         btnMapBank.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         btnMapBank.Location = new Point(216, 2);
         btnMapBank.Name = "btnMapBank";
+        btnMapBank.Rounded = true;
         btnMapBank.Size = new Size(224, 32);
         btnMapBank.TabIndex = 1;
         btnMapBank.Text = "A–D = patches A–D deste banco";
+        btnMapBank.TextColor = Color.White;
         btnMapBank.Click += btnMapBank_Click;
         // 
         // btnApply
         // 
         btnApply.Location = new Point(0, 2);
         btnApply.Name = "btnApply";
+        btnApply.Rounded = true;
         btnApply.Size = new Size(210, 32);
         btnApply.TabIndex = 0;
         btnApply.Text = "Aplicar neste switch";
+        btnApply.TextColor = Color.White;
         btnApply.Click += btnApply_Click;
         // 
         // panelFxTop
@@ -478,36 +498,44 @@ partial class FormMatribox
         // 
         btnImportPrst.Location = new Point(0, 94);
         btnImportPrst.Name = "btnImportPrst";
+        btnImportPrst.Rounded = true;
         btnImportPrst.Size = new Size(440, 28);
         btnImportPrst.TabIndex = 5;
         btnImportPrst.Text = "Importar .prst da Sonicake…";
+        btnImportPrst.TextColor = Color.White;
         btnImportPrst.Click += btnImportPrst_Click;
         // 
         // btnScanMatribox
         // 
         btnScanMatribox.Location = new Point(212, 64);
         btnScanMatribox.Name = "btnScanMatribox";
+        btnScanMatribox.Rounded = true;
         btnScanMatribox.Size = new Size(228, 26);
         btnScanMatribox.TabIndex = 4;
         btnScanMatribox.Text = "Testar MIDI (240 patches)";
+        btnScanMatribox.TextColor = Color.White;
         btnScanMatribox.Click += btnScanMatribox_Click;
         // 
         // btnAllOff
         // 
         btnAllOff.Location = new Point(106, 64);
         btnAllOff.Name = "btnAllOff";
+        btnAllOff.Rounded = true;
         btnAllOff.Size = new Size(100, 26);
         btnAllOff.TabIndex = 2;
         btnAllOff.Text = "Todos Off";
+        btnAllOff.TextColor = Color.White;
         btnAllOff.Click += btnAllOff_Click;
         // 
         // btnAllOn
         // 
         btnAllOn.Location = new Point(0, 64);
         btnAllOn.Name = "btnAllOn";
+        btnAllOn.Rounded = true;
         btnAllOn.Size = new Size(100, 26);
         btnAllOn.TabIndex = 1;
         btnAllOn.Text = "Todos On";
+        btnAllOn.TextColor = Color.White;
         btnAllOn.Click += btnAllOn_Click;
         // 
         // chkStomp
@@ -571,14 +599,14 @@ partial class FormMatribox
     private Label lblScan;
     private ProgressBar progressBarScan;
     private Panel panelTop;
-    private Button btnInicio;
+    private ForeverButton btnInicio;
     private Label lblMatriboxMidi;
     private ComboBox cmbMatriboxMidi;
-    private Button btnConnectMatribox;
+    private ForeverButton btnConnectMatribox;
     private Label lblChocolateMidi;
     private ComboBox cmbChocolateMidi;
-    private Button btnConnectChocolate;
-    private Button btnRefresh;
+    private ForeverButton btnConnectChocolate;
+    private ForeverButton btnRefresh;
     private Label lblChannel;
     private NumericUpDown numChannel;
     private Label lblMatriboxHint;
@@ -598,16 +626,16 @@ partial class FormMatribox
     private Panel panelBtnRow2;
     private Label lblFx;
     private CheckBox chkStomp;
-    private Button btnAllOn;
-    private Button btnAllOff;
-    private Button btnImportPrst;
-    private Button btnScanMatribox;
+    private ForeverButton btnAllOn;
+    private ForeverButton btnAllOff;
+    private ForeverButton btnImportPrst;
+    private ForeverButton btnScanMatribox;
     private TableLayoutPanel tableFx;
     private TextBox txtPreview;
-    private Button btnApply;
-    private Button btnMapBank;
-    private Button btnTestMatribox;
-    private Button btnReadChocolate;
-    private Button btnWriteChocolate;
+    private ForeverButton btnApply;
+    private ForeverButton btnMapBank;
+    private ForeverButton btnTestMatribox;
+    private ForeverButton btnReadChocolate;
+    private ForeverButton btnWriteChocolate;
     private TextBox txtLog;
 }

@@ -2,9 +2,11 @@ using ChocolateEditor.Matribox;
 using ChocolateEditor.Models;
 using ChocolateEditor.Protocol;
 
+using ChocolateEditor.Ui;
+
 namespace ChocolateEditor.Forms;
 
-public partial class FormMatribox : Form
+public partial class FormMatribox : DarkForm
 {
     private readonly ChocolateUsbClient _chocolate = new();
     private readonly MatriboxMidiClient _matribox = new();
@@ -354,7 +356,7 @@ public partial class FormMatribox : Form
         if (_matribox.IsConnected)
         {
             _matribox.Disconnect();
-            btnConnectMatribox.Text = "Conectar Matribox";
+            StyleMatriboxConnect();
             return;
         }
 
@@ -368,7 +370,7 @@ public partial class FormMatribox : Form
         {
             _matribox.Channel = (int)numChannel.Value;
             _matribox.Connect(name);
-            btnConnectMatribox.Text = "Desconectar Matribox";
+            StyleMatriboxConnect();
             ApplyChainToUi(_matribox.CurrentChain.Count > 0 ? _matribox.CurrentChain : HotoneSysex.EmptyChain());
             int named = _matribox.Presets.Count(MatriboxPresetStore.HasUsefulData);
             Log(named == 0
@@ -386,7 +388,7 @@ public partial class FormMatribox : Form
         if (_chocolate.IsConnected)
         {
             _chocolate.Disconnect();
-            btnConnectChocolate.Text = "Conectar Chocolate";
+            StyleChocolateConnect();
             return;
         }
 
@@ -402,11 +404,12 @@ public partial class FormMatribox : Form
             SetBusy(true, "A ligar o Chocolate…");
             _chocolate.Connect(name);
             await _chocolate.HandshakeAsync();
-            btnConnectChocolate.Text = "Desconectar Chocolate";
+            StyleChocolateConnect();
         }
         catch (Exception ex)
         {
             _chocolate.Disconnect();
+            StyleChocolateConnect();
             MessageBox.Show(this, ex.Message, "Chocolate USB", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         finally
@@ -692,6 +695,34 @@ public partial class FormMatribox : Form
         }
 
         ApplyChainToUi(HotoneSysex.EmptyChain());
+    }
+
+    private void StyleMatriboxConnect()
+    {
+        if (_matribox.IsConnected)
+        {
+            btnConnectMatribox.Text = "Desconectar Matribox";
+            UiTheme.StyleAction(btnConnectMatribox, UiTheme.Accent);
+        }
+        else
+        {
+            btnConnectMatribox.Text = "Conectar Matribox";
+            UiTheme.StyleAction(btnConnectMatribox, UiTheme.Teal);
+        }
+    }
+
+    private void StyleChocolateConnect()
+    {
+        if (_chocolate.IsConnected)
+        {
+            btnConnectChocolate.Text = "Desconectar Chocolate";
+            UiTheme.StyleAction(btnConnectChocolate, UiTheme.Accent);
+        }
+        else
+        {
+            btnConnectChocolate.Text = "Conectar Chocolate";
+            UiTheme.StyleAction(btnConnectChocolate, UiTheme.Blue);
+        }
     }
 
     private void SetBusy(bool busy, string? text = null, int current = 0, int total = 0)

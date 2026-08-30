@@ -3,9 +3,11 @@ using ChocolateEditor.Ai;
 using ChocolateEditor.Controls;
 using ChocolateEditor.Matribox;
 
+using ChocolateEditor.Ui;
+
 namespace ChocolateEditor.Forms;
 
-public partial class FormAiPrompt : Form
+public partial class FormAiPrompt : DarkForm
 {
     private MatriboxPatchDraft? _draft;
 
@@ -32,7 +34,7 @@ public partial class FormAiPrompt : Form
         if (e.Control && e.KeyCode == Keys.Enter)
         {
             e.SuppressKeyPress = true;
-            btnSend.PerformClick();
+            btnSend_Click(btnSend, EventArgs.Empty);
         }
     }
 
@@ -151,6 +153,7 @@ public partial class FormAiPrompt : Form
         SyncManualCheckbox();
         btnExportPrst.Enabled = !busy && _draft is not null;
         btnSend.Text = busy ? "A aguardar…" : "Enviar";
+        btnSend.Invalidate();
     }
 
     private void chkPatchMatribox_CheckedChanged(object? sender, EventArgs e)
@@ -248,23 +251,23 @@ public partial class FormAiPrompt : Form
             <head>
             <meta charset="utf-8">
             <style>
-              html, body { margin: 0; padding: 0; background: #fff; }
+              html, body { margin: 0; padding: 0; background: #121214; }
               body {
                 font-family: "Segoe UI", Arial, sans-serif;
                 font-size: 15px;
                 line-height: 1.5;
-                color: #111;
+                color: #ececf0;
                 padding: 20px 24px;
                 {{(preWrap ? "white-space: pre-wrap;" : "")}}
                 word-wrap: break-word;
               }
-              h1 { font-size: 22px; margin: 0 0 6px; }
-              .meta { color: #555; margin: 0 0 16px; }
+              h1 { font-size: 22px; margin: 0 0 6px; color: #fff; }
+              .meta { color: #a8a8b0; margin: 0 0 16px; }
               table { border-collapse: collapse; width: 100%; max-width: 720px; margin: 12px 0 20px; }
-              th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
-              th { background: #f3f3f3; }
-              .hint { color: #333; }
-              pre { white-space: pre-wrap; font-family: "Segoe UI", Arial, sans-serif; }
+              th, td { border: 1px solid #484850; padding: 6px 10px; text-align: left; }
+              th { background: #28282e; }
+              .hint { color: #c8c8d0; }
+              pre { white-space: pre-wrap; font-family: "Segoe UI", Arial, sans-serif; color: #ececf0; }
             </style>
             </head>
             <body>

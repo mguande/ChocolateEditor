@@ -1,8 +1,9 @@
 using ChocolateEditor.Ai;
+using ChocolateEditor.Ui;
 
 namespace ChocolateEditor.Forms;
 
-public partial class FormAiSettings : Form
+public partial class FormAiSettings : DarkForm
 {
     private readonly bool _firstRun;
 
@@ -22,6 +23,15 @@ public partial class FormAiSettings : Form
         txtGeminiKey.Text = s.GeminiApiKey;
         txtGeminiModel.Text = s.ModelOf(AiProvider.Gemini);
         Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+        KeyPreview = true;
+        KeyDown += (_, e) =>
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                btnCancel_Click(btnCancel, EventArgs.Empty);
+            }
+        };
         if (_firstRun)
         {
             Text = "Configuração inicial";

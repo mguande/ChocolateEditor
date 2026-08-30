@@ -1,3 +1,5 @@
+using ChocolateEditor.Ui;
+
 namespace ChocolateEditor;
 
 static class Program
@@ -6,6 +8,7 @@ static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
+        Application.SetColorMode(SystemColorMode.Dark);
         Application.Run(new Forms.FormLauncher());
     }
 }

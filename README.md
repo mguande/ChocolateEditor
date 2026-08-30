@@ -26,6 +26,7 @@ O Windows pode avisar que a app não é reconhecida (não está assinada). Escol
 - **Chocolate × Matribox**: mapeia bancos/patches (PC 0-based) e liga/desliga os 12 módulos (CC 43–54). O ecrã só desbloqueia depois de ligar o Chocolate
 - **Configuração Matribox**: importa `.prst` da Sonicake (nomes, cadeia, On/Off)
 - **Prompt IA**: ChatGPT, Claude ou Gemini geram um patch Matribox (cadeia visual + knobs) e podes guardar `.prst`
+- Interface em **modo escuro** ([ReaLTaiizor](https://github.com/Taiizor/ReaLTaiizor) no ecrã inicial; as outras telas seguem o mesmo tema)
 
 Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSuite](http://www.m-vave.com/appdownload) oficial. MIDI da Matribox conforme o [manual firmware 1.2.2](https://sonicake.oss-accelerate.aliyuncs.com/res/JIyz39IVZe/Matribox_II_PRO_Online_Manual_EN_Firmware_V1.2.2.pdf).
 

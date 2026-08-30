@@ -166,17 +166,17 @@ internal static class GraphicsRound
 {
     public static void FillRounded(this Graphics g, Rectangle r, int radius, Brush brush)
     {
-        using var path = RoundPath(r, radius);
+        using var path = CreatePath(r, radius);
         g.FillPath(brush, path);
     }
 
     public static void DrawRounded(this Graphics g, Rectangle r, int radius, Pen pen)
     {
-        using var path = RoundPath(r, radius);
+        using var path = CreatePath(r, radius);
         g.DrawPath(pen, path);
     }
 
-    private static System.Drawing.Drawing2D.GraphicsPath RoundPath(Rectangle r, int radius)
+    public static System.Drawing.Drawing2D.GraphicsPath CreatePath(Rectangle r, int radius)
     {
         var path = new System.Drawing.Drawing2D.GraphicsPath();
         int d = radius * 2;

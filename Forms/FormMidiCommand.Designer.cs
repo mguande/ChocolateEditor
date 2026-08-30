@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
 partial class FormMidiCommand
@@ -28,8 +30,8 @@ partial class FormMidiCommand
         lblSysEx = new Label();
         txtSysEx = new TextBox();
         lblPreview = new Label();
-        btnOk = new Button();
-        btnCancel = new Button();
+        btnOk = new ForeverButton();
+        btnCancel = new ForeverButton();
         ((System.ComponentModel.ISupportInitialize)numChannel).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numData1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numData2).BeginInit();
@@ -142,30 +144,30 @@ partial class FormMidiCommand
         //
         // btnOk
         //
-        btnOk.Location = new Point(214, 228);
+        btnOk.Location = new Point(206, 228);
         btnOk.Name = "btnOk";
-        btnOk.Size = new Size(85, 28);
+        btnOk.Rounded = true;
+        btnOk.Size = new Size(92, 32);
         btnOk.TabIndex = 11;
         btnOk.Text = "OK";
-        btnOk.UseVisualStyleBackColor = true;
+        btnOk.TextColor = Color.White;
         btnOk.Click += btnOk_Click;
         //
         // btnCancel
         //
-        btnCancel.DialogResult = DialogResult.Cancel;
-        btnCancel.Location = new Point(305, 228);
+        btnCancel.Location = new Point(304, 228);
         btnCancel.Name = "btnCancel";
-        btnCancel.Size = new Size(85, 28);
+        btnCancel.Rounded = true;
+        btnCancel.Size = new Size(88, 32);
         btnCancel.TabIndex = 12;
         btnCancel.Text = "Cancelar";
-        btnCancel.UseVisualStyleBackColor = true;
+        btnCancel.TextColor = Color.White;
+        btnCancel.Click += btnCancel_Click;
         //
         // FormMidiCommand
         //
-        AcceptButton = btnOk;
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        CancelButton = btnCancel;
         ClientSize = new Size(408, 272);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         Controls.Add(lblType);
@@ -206,6 +208,6 @@ partial class FormMidiCommand
     private Label lblSysEx;
     private TextBox txtSysEx;
     private Label lblPreview;
-    private Button btnOk;
-    private Button btnCancel;
+    private ForeverButton btnOk;
+    private ForeverButton btnCancel;
 }

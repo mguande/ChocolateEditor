@@ -1,8 +1,9 @@
 using ChocolateEditor.Models;
+using ChocolateEditor.Ui;
 
 namespace ChocolateEditor.Forms;
 
-public partial class FormMidiCommand : Form
+public partial class FormMidiCommand : DarkForm
 {
     public MidiCommand Command { get; private set; }
 
@@ -29,6 +30,15 @@ public partial class FormMidiCommand : Form
         numData2.Value = Math.Clamp(Command.Data2, 0, 127);
         txtSysEx.Text = Command.SysExHex;
         UpdatePreview();
+        KeyPreview = true;
+        KeyDown += (_, e) =>
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                btnCancel_Click(btnCancel, EventArgs.Empty);
+            }
+        };
     }
 
     private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,6 +87,12 @@ public partial class FormMidiCommand : Form
     {
         Command = BuildCommand();
         DialogResult = DialogResult.OK;
+        Close();
+    }
+
+    private void btnCancel_Click(object? sender, EventArgs e)
+    {
+        DialogResult = DialogResult.Cancel;
         Close();
     }
 }

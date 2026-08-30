@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
 partial class FormAiPrompt
@@ -17,11 +19,11 @@ partial class FormAiPrompt
     private void InitializeComponent()
     {
         panelTop = new Panel();
-        btnInicio = new Button();
+        btnInicio = new ForeverButton();
         lblTitle = new Label();
         cmbProvider = new ComboBox();
-        btnSettings = new Button();
-        btnSend = new Button();
+        btnSettings = new ForeverButton();
+        btnSend = new ForeverButton();
         panelBar = new Panel();
         chkPatchMatribox = new CheckBox();
         chkSendManual = new CheckBox();
@@ -30,7 +32,7 @@ partial class FormAiPrompt
         panelChainHead = new Panel();
         lblPatchTitle = new Label();
         lblPatchMeta = new Label();
-        btnExportPrst = new Button();
+        btnExportPrst = new ForeverButton();
         flowChain = new FlowLayoutPanel();
         lblPatchNote = new Label();
         webReply = new WebBrowser();
@@ -51,16 +53,18 @@ partial class FormAiPrompt
         panelTop.Location = new Point(0, 0);
         panelTop.Name = "panelTop";
         panelTop.Padding = new Padding(12, 10, 12, 10);
-        panelTop.Size = new Size(960, 56);
+        panelTop.Size = new Size(960, 64);
         panelTop.TabIndex = 0;
         // 
         // btnInicio
         // 
-        btnInicio.Location = new Point(12, 12);
+        btnInicio.Location = new Point(12, 14);
         btnInicio.Name = "btnInicio";
-        btnInicio.Size = new Size(80, 32);
+        btnInicio.Rounded = true;
+        btnInicio.Size = new Size(88, 36);
         btnInicio.TabIndex = 0;
         btnInicio.Text = "← Início";
+        btnInicio.TextColor = Color.White;
         btnInicio.Click += btnInicio_Click;
         // 
         // lblTitle
@@ -77,7 +81,7 @@ partial class FormAiPrompt
         // 
         cmbProvider.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         cmbProvider.DropDownStyle = ComboBoxStyle.DropDownList;
-        cmbProvider.Location = new Point(548, 16);
+        cmbProvider.Location = new Point(548, 20);
         cmbProvider.Name = "cmbProvider";
         cmbProvider.Size = new Size(140, 23);
         cmbProvider.TabIndex = 2;
@@ -85,21 +89,25 @@ partial class FormAiPrompt
         // btnSettings
         // 
         btnSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        btnSettings.Location = new Point(696, 12);
+        btnSettings.Location = new Point(696, 14);
         btnSettings.Name = "btnSettings";
-        btnSettings.Size = new Size(100, 32);
+        btnSettings.Rounded = true;
+        btnSettings.Size = new Size(100, 36);
         btnSettings.TabIndex = 3;
         btnSettings.Text = "Configurar";
+        btnSettings.TextColor = Color.White;
         btnSettings.Click += btnSettings_Click;
         // 
         // btnSend
         // 
         btnSend.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        btnSend.Location = new Point(804, 12);
+        btnSend.Location = new Point(804, 14);
         btnSend.Name = "btnSend";
-        btnSend.Size = new Size(144, 32);
+        btnSend.Rounded = true;
+        btnSend.Size = new Size(144, 36);
         btnSend.TabIndex = 4;
         btnSend.Text = "Enviar";
+        btnSend.TextColor = Color.White;
         btnSend.Click += btnSend_Click;
         // 
         // panelBar
@@ -107,7 +115,7 @@ partial class FormAiPrompt
         panelBar.Controls.Add(chkSendManual);
         panelBar.Controls.Add(chkPatchMatribox);
         panelBar.Dock = DockStyle.Top;
-        panelBar.Location = new Point(0, 56);
+        panelBar.Location = new Point(0, 64);
         panelBar.Name = "panelBar";
         panelBar.Size = new Size(960, 58);
         panelBar.TabIndex = 1;
@@ -201,9 +209,11 @@ partial class FormAiPrompt
         btnExportPrst.Font = new Font("Segoe UI", 9F);
         btnExportPrst.Location = new Point(784, 8);
         btnExportPrst.Name = "btnExportPrst";
+        btnExportPrst.Rounded = true;
         btnExportPrst.Size = new Size(144, 32);
         btnExportPrst.TabIndex = 2;
         btnExportPrst.Text = "Guardar .prst";
+        btnExportPrst.TextColor = Color.White;
         btnExportPrst.Click += btnExportPrst_Click;
         // 
         // flowChain
@@ -267,11 +277,11 @@ partial class FormAiPrompt
     }
 
     private Panel panelTop;
-    private Button btnInicio;
+    private ForeverButton btnInicio;
     private Label lblTitle;
     private ComboBox cmbProvider;
-    private Button btnSettings;
-    private Button btnSend;
+    private ForeverButton btnSettings;
+    private ForeverButton btnSend;
     private Panel panelBar;
     private CheckBox chkPatchMatribox;
     private CheckBox chkSendManual;
@@ -280,7 +290,7 @@ partial class FormAiPrompt
     private Panel panelChainHead;
     private Label lblPatchTitle;
     private Label lblPatchMeta;
-    private Button btnExportPrst;
+    private ForeverButton btnExportPrst;
     private FlowLayoutPanel flowChain;
     private Label lblPatchNote;
     private WebBrowser webReply;

@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Controls;
 
 partial class SwitchPanel
@@ -22,14 +24,14 @@ partial class SwitchPanel
         lblBehavior = new Label();
         lblShort = new Label();
         lstShort = new ListBox();
-        btnAddShort = new Button();
-        btnEditShort = new Button();
-        btnRemoveShort = new Button();
+        btnAddShort = new ForeverButton();
+        btnEditShort = new ForeverButton();
+        btnRemoveShort = new ForeverButton();
         lblLong = new Label();
         lstLong = new ListBox();
-        btnAddLong = new Button();
-        btnEditLong = new Button();
-        btnRemoveLong = new Button();
+        btnAddLong = new ForeverButton();
+        btnEditLong = new ForeverButton();
+        btnRemoveLong = new ForeverButton();
         lblCustomCc = new Label();
         numCustomCc = new NumericUpDown();
         chkLatching = new CheckBox();
@@ -105,30 +107,33 @@ partial class SwitchPanel
         //
         btnAddShort.Location = new Point(268, 72);
         btnAddShort.Name = "btnAddShort";
-        btnAddShort.Size = new Size(78, 25);
+        btnAddShort.Rounded = true;
+        btnAddShort.Size = new Size(80, 26);
         btnAddShort.TabIndex = 4;
         btnAddShort.Text = "Adicionar";
-        btnAddShort.UseVisualStyleBackColor = true;
+        btnAddShort.TextColor = Color.White;
         btnAddShort.Click += btnAddShort_Click;
         //
         // btnEditShort
         //
-        btnEditShort.Location = new Point(268, 99);
+        btnEditShort.Location = new Point(268, 100);
         btnEditShort.Name = "btnEditShort";
-        btnEditShort.Size = new Size(78, 25);
+        btnEditShort.Rounded = true;
+        btnEditShort.Size = new Size(80, 26);
         btnEditShort.TabIndex = 5;
         btnEditShort.Text = "Editar";
-        btnEditShort.UseVisualStyleBackColor = true;
+        btnEditShort.TextColor = Color.White;
         btnEditShort.Click += btnEditShort_Click;
         //
         // btnRemoveShort
         //
-        btnRemoveShort.Location = new Point(268, 126);
+        btnRemoveShort.Location = new Point(268, 128);
         btnRemoveShort.Name = "btnRemoveShort";
-        btnRemoveShort.Size = new Size(78, 25);
+        btnRemoveShort.Rounded = true;
+        btnRemoveShort.Size = new Size(80, 26);
         btnRemoveShort.TabIndex = 6;
         btnRemoveShort.Text = "Remover";
-        btnRemoveShort.UseVisualStyleBackColor = true;
+        btnRemoveShort.TextColor = Color.White;
         btnRemoveShort.Click += btnRemoveShort_Click;
         //
         // lblLong
@@ -155,30 +160,33 @@ partial class SwitchPanel
         //
         btnAddLong.Location = new Point(268, 180);
         btnAddLong.Name = "btnAddLong";
-        btnAddLong.Size = new Size(78, 25);
+        btnAddLong.Rounded = true;
+        btnAddLong.Size = new Size(80, 26);
         btnAddLong.TabIndex = 9;
         btnAddLong.Text = "Adicionar";
-        btnAddLong.UseVisualStyleBackColor = true;
+        btnAddLong.TextColor = Color.White;
         btnAddLong.Click += btnAddLong_Click;
         //
         // btnEditLong
         //
-        btnEditLong.Location = new Point(268, 207);
+        btnEditLong.Location = new Point(268, 208);
         btnEditLong.Name = "btnEditLong";
-        btnEditLong.Size = new Size(78, 25);
+        btnEditLong.Rounded = true;
+        btnEditLong.Size = new Size(80, 26);
         btnEditLong.TabIndex = 10;
         btnEditLong.Text = "Editar";
-        btnEditLong.UseVisualStyleBackColor = true;
+        btnEditLong.TextColor = Color.White;
         btnEditLong.Click += btnEditLong_Click;
         //
         // btnRemoveLong
         //
-        btnRemoveLong.Location = new Point(268, 234);
+        btnRemoveLong.Location = new Point(268, 236);
         btnRemoveLong.Name = "btnRemoveLong";
-        btnRemoveLong.Size = new Size(78, 25);
+        btnRemoveLong.Rounded = true;
+        btnRemoveLong.Size = new Size(80, 26);
         btnRemoveLong.TabIndex = 11;
         btnRemoveLong.Text = "Remover";
-        btnRemoveLong.UseVisualStyleBackColor = true;
+        btnRemoveLong.TextColor = Color.White;
         btnRemoveLong.Click += btnRemoveLong_Click;
         //
         // lblCustomCc
@@ -230,14 +238,14 @@ partial class SwitchPanel
     private Label lblBehavior;
     private Label lblShort;
     private ListBox lstShort;
-    private Button btnAddShort;
-    private Button btnEditShort;
-    private Button btnRemoveShort;
+    private ForeverButton btnAddShort;
+    private ForeverButton btnEditShort;
+    private ForeverButton btnRemoveShort;
     private Label lblLong;
     private ListBox lstLong;
-    private Button btnAddLong;
-    private Button btnEditLong;
-    private Button btnRemoveLong;
+    private ForeverButton btnAddLong;
+    private ForeverButton btnEditLong;
+    private ForeverButton btnRemoveLong;
     private Label lblCustomCc;
     private NumericUpDown numCustomCc;
     private CheckBox chkLatching;

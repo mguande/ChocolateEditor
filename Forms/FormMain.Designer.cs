@@ -1,4 +1,5 @@
 using ChocolateEditor.Controls;
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
 
 namespace ChocolateEditor.Forms;
 
@@ -43,10 +44,10 @@ partial class FormMain
         lblTrs = new Label();
         cmbMode = new ComboBox();
         lblMode = new Label();
-        btnWrite = new Button();
-        btnRead = new Button();
-        btnConnect = new Button();
-        btnRefreshMidi = new Button();
+        btnWrite = new ForeverButton();
+        btnRead = new ForeverButton();
+        btnConnect = new ForeverButton();
+        btnRefreshMidi = new ForeverButton();
         cmbMidiDevice = new ComboBox();
         lblDevice = new Label();
         splitContainer = new SplitContainer();
@@ -58,7 +59,7 @@ partial class FormMain
         switchC = new SwitchPanel();
         switchD = new SwitchPanel();
         panelBank = new Panel();
-        btnCopyBank = new Button();
+        btnCopyBank = new ForeverButton();
         txtBankName = new TextBox();
         lblBankName = new Label();
         lblBankTitle = new Label();
@@ -204,7 +205,7 @@ partial class FormMain
         panelDevice.Dock = DockStyle.Top;
         panelDevice.Location = new Point(0, 24);
         panelDevice.Name = "panelDevice";
-        panelDevice.Size = new Size(1264, 72);
+        panelDevice.Size = new Size(1264, 80);
         panelDevice.TabIndex = 1;
         // 
         // lblMidiHint
@@ -278,42 +279,46 @@ partial class FormMain
         // 
         // btnWrite
         // 
-        btnWrite.Location = new Point(634, 7);
+        btnWrite.Location = new Point(642, 8);
         btnWrite.Name = "btnWrite";
-        btnWrite.Size = new Size(140, 25);
+        btnWrite.Rounded = true;
+        btnWrite.Size = new Size(152, 32);
         btnWrite.TabIndex = 5;
         btnWrite.Text = "Gravar no Chocolate";
-        btnWrite.UseVisualStyleBackColor = true;
+        btnWrite.TextColor = Color.White;
         btnWrite.Click += btnWrite_Click;
         // 
         // btnRead
         // 
-        btnRead.Location = new Point(498, 7);
+        btnRead.Location = new Point(506, 8);
         btnRead.Name = "btnRead";
-        btnRead.Size = new Size(130, 25);
+        btnRead.Rounded = true;
+        btnRead.Size = new Size(130, 32);
         btnRead.TabIndex = 4;
         btnRead.Text = "Ler do Chocolate";
-        btnRead.UseVisualStyleBackColor = true;
+        btnRead.TextColor = Color.White;
         btnRead.Click += btnRead_Click;
         // 
         // btnConnect
         // 
-        btnConnect.Location = new Point(392, 7);
+        btnConnect.Location = new Point(392, 8);
         btnConnect.Name = "btnConnect";
-        btnConnect.Size = new Size(100, 25);
+        btnConnect.Rounded = true;
+        btnConnect.Size = new Size(108, 32);
         btnConnect.TabIndex = 3;
         btnConnect.Text = "Conectar";
-        btnConnect.UseVisualStyleBackColor = true;
+        btnConnect.TextColor = Color.White;
         btnConnect.Click += btnConnect_Click;
         // 
         // btnRefreshMidi
         // 
-        btnRefreshMidi.Location = new Point(306, 7);
+        btnRefreshMidi.Location = new Point(306, 8);
         btnRefreshMidi.Name = "btnRefreshMidi";
-        btnRefreshMidi.Size = new Size(80, 25);
+        btnRefreshMidi.Rounded = true;
+        btnRefreshMidi.Size = new Size(80, 32);
         btnRefreshMidi.TabIndex = 2;
         btnRefreshMidi.Text = "Atualizar";
-        btnRefreshMidi.UseVisualStyleBackColor = true;
+        btnRefreshMidi.TextColor = Color.White;
         btnRefreshMidi.Click += btnRefreshMidi_Click;
         // 
         // cmbMidiDevice
@@ -337,7 +342,7 @@ partial class FormMain
         // splitContainer
         // 
         splitContainer.Dock = DockStyle.Fill;
-        splitContainer.Location = new Point(0, 96);
+        splitContainer.Location = new Point(0, 104);
         splitContainer.Name = "splitContainer";
         // 
         // splitContainer.Panel1
@@ -446,12 +451,13 @@ partial class FormMain
         // 
         // btnCopyBank
         // 
-        btnCopyBank.Location = new Point(540, 11);
+        btnCopyBank.Location = new Point(540, 8);
         btnCopyBank.Name = "btnCopyBank";
-        btnCopyBank.Size = new Size(160, 25);
+        btnCopyBank.Rounded = true;
+        btnCopyBank.Size = new Size(168, 32);
         btnCopyBank.TabIndex = 3;
         btnCopyBank.Text = "Copiar este banco…";
-        btnCopyBank.UseVisualStyleBackColor = true;
+        btnCopyBank.TextColor = Color.White;
         btnCopyBank.Click += mnuCopiarBanco_Click;
         // 
         // txtBankName
@@ -562,10 +568,10 @@ partial class FormMain
     private Panel panelDevice;
     private Label lblDevice;
     private ComboBox cmbMidiDevice;
-    private Button btnRefreshMidi;
-    private Button btnConnect;
-    private Button btnRead;
-    private Button btnWrite;
+    private ForeverButton btnRefreshMidi;
+    private ForeverButton btnConnect;
+    private ForeverButton btnRead;
+    private ForeverButton btnWrite;
     private Label lblMode;
     private ComboBox cmbMode;
     private Label lblTrs;
@@ -580,7 +586,7 @@ partial class FormMain
     private Label lblBankTitle;
     private Label lblBankName;
     private TextBox txtBankName;
-    private Button btnCopyBank;
+    private ForeverButton btnCopyBank;
     private TableLayoutPanel tableSwitches;
     private SwitchPanel switchA;
     private SwitchPanel switchB;

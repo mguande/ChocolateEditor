@@ -1,8 +1,9 @@
 using ChocolateEditor.Models;
+using ChocolateEditor.Ui;
 
 namespace ChocolateEditor.Forms;
 
-public partial class FormCopyBank : Form
+public partial class FormCopyBank : DarkForm
 {
     public FormCopyBank(DeviceConfiguration config, int currentBank)
     {
@@ -23,6 +24,15 @@ public partial class FormCopyBank : Form
         chkD.Checked = true;
         chkShort.Checked = true;
         chkLong.Checked = true;
+        KeyPreview = true;
+        KeyDown += (_, e) =>
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                btnCancel_Click(btnCancel, EventArgs.Empty);
+            }
+        };
     }
 
     public int FromIndex => cmbFrom.SelectedIndex;
@@ -73,6 +83,12 @@ public partial class FormCopyBank : Form
         }
 
         DialogResult = DialogResult.OK;
+        Close();
+    }
+
+    private void btnCancel_Click(object? sender, EventArgs e)
+    {
+        DialogResult = DialogResult.Cancel;
         Close();
     }
 }

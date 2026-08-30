@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -19,10 +19,12 @@
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <PackageIcon>choco.png</PackageIcon>
+    <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Melanchall.DryWetMidi" Version="7.2.0" />
+    <PackageReference Include="ReaLTaiizor" Version="3.8.2.1" />
   </ItemGroup>
 
   <ItemGroup>

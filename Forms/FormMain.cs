@@ -2,9 +2,11 @@ using ChocolateEditor.Controls;
 using ChocolateEditor.Models;
 using ChocolateEditor.Protocol;
 
+using ChocolateEditor.Ui;
+
 namespace ChocolateEditor.Forms;
 
-public partial class FormMain : Form
+public partial class FormMain : DarkForm
 {
     private readonly ChocolateUsbClient _usb = new();
     private DeviceConfiguration _config = DeviceConfiguration.CreateStarter();
@@ -116,6 +118,22 @@ public partial class FormMain : Form
         lblStatus.Text = _usb.IsConnected
             ? "USB: " + _usb.ConnectedName
             : "USB: desconectado";
+        UiTheme.StyleAction(btnWrite, dirty ? UiTheme.Accent : UiTheme.Surface2);
+        btnWrite.Text = dirty ? "Gravar no Chocolate •" : "Gravar no Chocolate";
+    }
+
+    private void StyleConnect()
+    {
+        if (_usb.IsConnected)
+        {
+            btnConnect.Text = "Desconectar";
+            UiTheme.StyleAction(btnConnect, UiTheme.Accent);
+        }
+        else
+        {
+            btnConnect.Text = "Conectar";
+            UiTheme.StyleAction(btnConnect, UiTheme.Blue);
+        }
     }
 
     private void MarkDirty()
@@ -275,7 +293,7 @@ public partial class FormMain : Form
         if (_usb.IsConnected)
         {
             _usb.Disconnect();
-            btnConnect.Text = "Conectar";
+            StyleConnect();
             SetDirty(_dirty);
             return;
         }
@@ -291,13 +309,14 @@ public partial class FormMain : Form
             UseWaitCursor = true;
             _usb.Connect(name);
             string? id = await _usb.HandshakeAsync();
-            btnConnect.Text = "Desconectar";
+            StyleConnect();
             SetDirty(_dirty);
             AppendLog("Conectado" + (id is null ? "." : ": " + id) + "  (se o handshake falhar, ainda assim tente Ler/Gravar)");
         }
         catch (Exception ex)
         {
             _usb.Disconnect();
+            StyleConnect();
             MessageBox.Show(this, ex.Message, "USB", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         finally

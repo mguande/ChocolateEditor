@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
 partial class FormAiSettings
@@ -29,8 +31,8 @@ partial class FormAiSettings
         txtGeminiKey = new TextBox();
         lblGeminiModel = new Label();
         txtGeminiModel = new TextBox();
-        btnSave = new Button();
-        btnCancel = new Button();
+        btnSave = new ForeverButton();
+        btnCancel = new ForeverButton();
         SuspendLayout();
         // 
         // lblHint
@@ -145,29 +147,31 @@ partial class FormAiSettings
         // 
         // btnSave
         // 
-        btnSave.Location = new Point(364, 444);
+        btnSave.Location = new Point(348, 444);
         btnSave.Name = "btnSave";
-        btnSave.Size = new Size(88, 32);
+        btnSave.Rounded = true;
+        btnSave.Size = new Size(100, 36);
         btnSave.TabIndex = 14;
         btnSave.Text = "Guardar";
+        btnSave.TextColor = Color.White;
         btnSave.Click += btnSave_Click;
         // 
         // btnCancel
         // 
-        btnCancel.Location = new Point(456, 444);
+        btnCancel.Location = new Point(454, 444);
         btnCancel.Name = "btnCancel";
-        btnCancel.Size = new Size(84, 32);
+        btnCancel.Rounded = true;
+        btnCancel.Size = new Size(90, 36);
         btnCancel.TabIndex = 13;
         btnCancel.Text = "Cancelar";
+        btnCancel.TextColor = Color.White;
         btnCancel.Click += btnCancel_Click;
         // 
         // FormAiSettings
         // 
-        AcceptButton = btnSave;
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        CancelButton = btnCancel;
-        ClientSize = new Size(564, 496);
+        ClientSize = new Size(564, 500);
         Controls.Add(btnCancel);
         Controls.Add(btnSave);
         Controls.Add(txtGeminiModel);
@@ -206,6 +210,6 @@ partial class FormAiSettings
     private TextBox txtGeminiKey;
     private Label lblGeminiModel;
     private TextBox txtGeminiModel;
-    private Button btnSave;
-    private Button btnCancel;
+    private ForeverButton btnSave;
+    private ForeverButton btnCancel;
 }

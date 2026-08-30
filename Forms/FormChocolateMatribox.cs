@@ -1,24 +1,20 @@
+using ChocolateEditor.Controls;
 using ChocolateEditor.Matribox;
 using ChocolateEditor.Models;
 using ChocolateEditor.Protocol;
 
+using ChocolateEditor.Ui;
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
-public partial class FormChocolateMatribox : Form
+public partial class FormChocolateMatribox : DarkForm
 {
-    private static readonly Color Bg = Color.FromArgb(18, 18, 20);
-    private static readonly Color Card = Color.FromArgb(36, 36, 40);
-    private static readonly Color Border = Color.FromArgb(90, 90, 96);
-    private static readonly Color Blue = Color.FromArgb(77, 163, 255);
-    private static readonly Color Fg = Color.White;
-    private static readonly Color Muted = Color.FromArgb(176, 176, 184);
-
     private readonly ChocolateUsbClient _usb = new();
     private readonly List<MatriboxPresetInfo> _presets = MatriboxPresetStore.Load();
     private DeviceConfiguration _config = DeviceConfiguration.CreateStarter();
-    private ComboBox[] _fx = [];
-    private Label[] _fxLabels = [];
-    private Button[] _sw = [];
+    private ChainStompPedal?[] _pedals = new ChainStompPedal?[HotoneSysex.SlotCount];
+    private ForeverButton[] _sw = [];
     private int _switchIndex;
     private bool _loading = true;
     private bool _dirty;
@@ -29,7 +25,7 @@ public partial class FormChocolateMatribox : Form
         ApplyTheme();
         _usb.Log += (_, _) => { };
         _sw = [btnSwA, btnSwB, btnSwC, btnSwD];
-        BuildEffectRows();
+        BuildPedalStrip();
         FillChocolateBanks();
         FillPatchList();
         RefreshPorts();
@@ -39,6 +35,8 @@ public partial class FormChocolateMatribox : Form
         Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
     }
 
+    protected override bool AutoThemeControls => false;
+
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         _usb.Dispose();
@@ -47,119 +45,212 @@ public partial class FormChocolateMatribox : Form
 
     private void ApplyTheme()
     {
-        BackColor = Bg;
-        ForeColor = Fg;
-        foreach (Control c in new Control[]
-                 {
-                     panelTop, panelChoco, panelMatribox, panelBancos, panelFx, panelFxScroll
-                 })
+        BackColor = UiTheme.Bg;
+        ForeColor = UiTheme.Text;
+        panelTop.BackColor = UiTheme.Surface;
+        panelTopActions.BackColor = UiTheme.Surface;
+        panelBody.BackColor = UiTheme.Bg;
+        panelMatribox.BackColor = UiTheme.Bg;
+        splitMatribox.BackColor = UiTheme.Bg;
+        splitMatribox.Panel1.BackColor = UiTheme.Bg;
+        splitMatribox.Panel2.BackColor = UiTheme.Bg;
+        foreach (var header in new[] { tabChoco, tabMatribox, tabBancos, tabFx })
         {
-            c.BackColor = Card;
-            c.ForeColor = Fg;
+            header.BackColor = Color.Transparent;
+            header.ForeColor = UiTheme.Text;
+            header.Font = new Font("Segoe UI Semibold", 11F);
         }
 
-        panelTop.BackColor = Bg;
-        foreach (var tab in new[] { tabChoco, tabMatribox, tabBancos, tabFx })
-        {
-            tab.BackColor = Blue;
-            tab.ForeColor = Color.FromArgb(12, 20, 32);
-        }
-
-        lstPatches.BackColor = Color.FromArgb(24, 24, 28);
-        lstPatches.ForeColor = Fg;
+        tabChoco.BackColor = UiTheme.Surface;
+        tabBancos.BackColor = UiTheme.Surface;
+        tabFx.BackColor = UiTheme.Surface;
+        tabMatribox.BackColor = UiTheme.Bg;
+        tabBancos.Font = new Font("Segoe UI Semibold", 10F);
+        tabFx.Font = new Font("Segoe UI Semibold", 10F);
+        panelFxScroll.BackColor = UiTheme.Surface;
+        flowPedals.BackColor = UiTheme.Surface;
+        lstPatches.BackColor = UiTheme.Surface;
+        lstPatches.ForeColor = UiTheme.Text;
+        lstPatches.DrawMode = DrawMode.OwnerDrawFixed;
+        lstPatches.ItemHeight = 28;
+        lstPatches.DrawItem -= lstPatches_DrawItem;
+        lstPatches.DrawItem += lstPatches_DrawItem;
         foreach (ComboBox cmb in new[] { cmbChocolateMidi, cmbChocoBank })
         {
             cmb.FlatStyle = FlatStyle.Flat;
-            cmb.BackColor = Color.FromArgb(24, 24, 28);
-            cmb.ForeColor = Fg;
+            cmb.BackColor = UiTheme.Surface2;
+            cmb.ForeColor = UiTheme.Text;
         }
 
-        numChannel.BackColor = Color.FromArgb(24, 24, 28);
-        numChannel.ForeColor = Fg;
-        chkStomp.ForeColor = Fg;
-        lblChocoHint.ForeColor = Muted;
-        lblFxHint.ForeColor = Muted;
-        lblBanco.ForeColor = Fg;
-        lblTitle.ForeColor = Fg;
-        lblChannel.ForeColor = Muted;
-        foreach (Button b in new[] { btnInicio, btnConnect, btnRead })
+        numChannel.BackColor = UiTheme.Surface2;
+        numChannel.ForeColor = UiTheme.Text;
+        lblTitle.ForeColor = UiTheme.Text;
+        lblBanco.ForeColor = UiTheme.Muted;
+        lblMidi.ForeColor = UiTheme.Muted;
+        lblChannel.ForeColor = UiTheme.Muted;
+        lblStomp.ForeColor = UiTheme.Text;
+        lblChocoHint.ForeColor = UiTheme.Muted;
+        lblFxHint.ForeColor = UiTheme.Muted;
+        UiTheme.StyleAction(btnInicio, UiTheme.Surface2);
+        UiTheme.StyleAction(btnRead, UiTheme.Surface2);
+        StyleConnect();
+        foreach (var sw in new[] { btnSwA, btnSwB, btnSwC, btnSwD })
         {
-            StyleGhost(b);
+            sw.Rounded = true;
+            sw.Cursor = Cursors.Hand;
+            sw.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            sw.TextColor = Color.White;
         }
 
+        chkStomp.BaseColor = UiTheme.Chocolate;
+        chkStomp.BGColor = UiTheme.Surface2;
+        chkStomp.ToggleColor = UiTheme.Surface;
         StyleSave(false);
-        PaintCard(panelChoco);
-        PaintCard(panelMatribox);
-        PaintCard(panelBancos);
-        PaintCard(panelFx);
+        MakeRoundedCard(panelChoco);
+        MakeRoundedCard(panelBancos);
+        MakeRoundedCard(panelFx);
     }
 
-    private static void PaintCard(Panel panel)
+    private void lstPatches_DrawItem(object? sender, DrawItemEventArgs e)
     {
-        panel.Paint += (_, e) =>
+        if (e.Index < 0)
+        {
+            return;
+        }
+
+        bool sel = (e.State & DrawItemState.Selected) != 0;
+        using var bg = new SolidBrush(sel ? UiTheme.Teal : UiTheme.Surface);
+        e.Graphics.FillRectangle(bg, e.Bounds);
+        string text = lstPatches.Items[e.Index]?.ToString() ?? "";
+        var bounds = Rectangle.Inflate(e.Bounds, -8, 0);
+        TextRenderer.DrawText(
+            e.Graphics,
+            text,
+            lstPatches.Font,
+            bounds,
+            sel ? Color.White : UiTheme.Text,
+            TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+    }
+
+    private static void MakeRoundedCard(Panel panel)
+    {
+        panel.BackColor = UiTheme.Surface;
+        void Clip()
         {
             var r = panel.ClientRectangle;
-            r.Width -= 1;
-            r.Height -= 1;
-            using var pen = new Pen(Border);
-            e.Graphics.DrawRectangle(pen, r);
-        };
-    }
+            if (r.Width < 8 || r.Height < 8)
+            {
+                return;
+            }
 
-    private static void StyleGhost(Button b)
-    {
-        b.FlatStyle = FlatStyle.Flat;
-        b.FlatAppearance.BorderColor = Border;
-        b.BackColor = Color.FromArgb(28, 28, 32);
-        b.ForeColor = Fg;
+            using var path = GraphicsRound.CreatePath(r, 14);
+            panel.Region?.Dispose();
+            panel.Region = new Region(path);
+        }
+
+        Clip();
+        panel.Resize += (_, _) => Clip();
     }
 
     private void StyleSave(bool dirty)
     {
         _dirty = dirty;
-        btnWrite.FlatStyle = FlatStyle.Flat;
-        btnWrite.FlatAppearance.BorderColor = dirty ? Blue : Border;
-        btnWrite.BackColor = dirty ? Blue : Color.FromArgb(28, 28, 32);
-        btnWrite.ForeColor = dirty ? Color.FromArgb(12, 20, 32) : Fg;
+        UiTheme.StyleAction(btnWrite, dirty ? UiTheme.Accent : UiTheme.Surface2);
         btnWrite.Text = dirty ? "Gravar no Chocolate •" : "Gravar no Chocolate";
     }
 
-    private void BuildEffectRows()
+    private void StyleConnect()
     {
-        _fx = new ComboBox[HotoneSysex.SlotCount];
-        _fxLabels = new Label[HotoneSysex.SlotCount];
-        tableFx.RowCount = HotoneSysex.SlotCount;
-        tableFx.RowStyles.Clear();
-        for (int i = 0; i < _fx.Length; i++)
+        if (_usb.IsConnected)
         {
-            tableFx.RowStyles.Add(new RowStyle(SizeType.Absolute, 32));
-            var lbl = new Label
+            btnConnect.Text = "Desligar";
+            UiTheme.StyleAction(btnConnect, UiTheme.Accent);
+        }
+        else
+        {
+            btnConnect.Text = "Conectar";
+            UiTheme.StyleAction(btnConnect, UiTheme.Blue);
+        }
+    }
+
+    private void BuildPedalStrip()
+    {
+        flowPedals.WrapContents = true;
+        flowPedals.BackColor = UiTheme.Surface;
+        RefreshPedalStrip();
+    }
+
+    private void RefreshPedalStrip(bool fromChocolateMapping = true)
+    {
+        var chain = CurrentPatchChain();
+        var cmds = TryCurrentGroup(out _)
+            ? SwitchCommands(CurrentSwitch()).ToList()
+            : [];
+        bool prev = _loading;
+        _loading = true;
+        flowPedals.SuspendLayout();
+        flowPedals.Controls.Clear();
+        _pedals = new ChainStompPedal?[HotoneSysex.SlotCount];
+        var slots = chain?
+            .Where(s => !s.Empty)
+            .OrderBy(s => s.Position)
+            .ToList() ?? [];
+        if (slots.Count == 0)
+        {
+            flowPedals.Controls.Add(new Label
             {
-                Text = $"--  (CC {MatriboxMidi.ModuleCc(i)})",
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft,
-                ForeColor = Fg,
-                AutoEllipsis = true
-            };
-            var cmb = new ComboBox
+                AutoSize = true,
+                MaximumSize = new Size(520, 0),
+                ForeColor = UiTheme.Muted,
+                Padding = new Padding(8),
+                Text = "Escolhe um patch da Matribox para ver os pedais da cadeia. Clica num pedal para o ligar ou desligar no Chocolate."
+            });
+        }
+        else
+        {
+            for (int n = 0; n < slots.Count; n++)
             {
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Dock = DockStyle.Fill,
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(24, 24, 28),
-                ForeColor = Fg
-            };
-            cmb.Items.AddRange(["Não enviar", "Off", "On"]);
-            cmb.SelectedIndex = 0;
-            cmb.SelectedIndexChanged += (_, _) => CommitCurrentSwitch();
-            _fx[i] = cmb;
-            _fxLabels[i] = lbl;
-            tableFx.Controls.Add(lbl, 0, i);
-            tableFx.Controls.Add(cmb, 1, i);
+                if (n > 0)
+                {
+                    flowPedals.Controls.Add(new ChainCable());
+                }
+
+                var slot = slots[n];
+                string alg = MatriboxAlgCatalog.Name(slot.Algorithm);
+                bool engaged = fromChocolateMapping
+                    ? PedalEngagedFromMapping(cmds, chain, slot.Position)
+                    : slot.On;
+                var pedal = new ChainStompPedal(slot.Position, slot.ModuleType, alg, engaged)
+                {
+                    Enabled = _usb.IsConnected && TryCurrentGroup(out _)
+                };
+                pedal.EngagedChanged += (_, _) => CommitCurrentSwitch();
+                _pedals[slot.Position] = pedal;
+                flowPedals.Controls.Add(pedal);
+            }
         }
 
-        tableFx.Height = _fx.Length * 32;
-        tableFx.BackColor = Card;
+        flowPedals.ResumeLayout();
+        _loading = prev;
+    }
+
+    private static bool PedalEngagedFromMapping(
+        IEnumerable<MidiCommand> commands,
+        IReadOnlyList<MatriboxChainSlot>? chain,
+        int slot)
+    {
+        int stored = MatriboxMidi.EffectChoice(commands, slot);
+        if (stored == 2)
+        {
+            return true;
+        }
+
+        if (stored == 1)
+        {
+            return false;
+        }
+
+        return MatriboxMidi.PresetEffectChoice(chain, slot) == 2;
     }
 
     private const string ChocoBankPlaceholder = "Selecione";
@@ -252,23 +343,26 @@ public partial class FormChocolateMatribox : Form
         for (int i = 0; i < _sw.Length; i++)
         {
             bool on = i == index;
-            _sw[i].BackColor = on ? Blue : Color.FromArgb(28, 28, 32);
-            _sw[i].ForeColor = on ? Color.FromArgb(12, 20, 32) : Fg;
-            _sw[i].FlatAppearance.BorderColor = on ? Blue : Border;
+            _sw[i].BaseColor = on ? UiTheme.Chocolate : UiTheme.Surface2;
+            _sw[i].TextColor = Color.White;
+            _sw[i].Invalidate();
         }
 
         SetEffectsEnabled(TryCurrentGroup(out _));
         lblFxHint.Text = index == 0
             ? "A · curto só manda efeitos diferentes do patch. A · longo escolhe o patch."
-            : $"Switch {(char)('A' + index)} · curto só manda o que for diferente do patch da Matribox.";
+            : $"Switch {(char)('A' + index)} · curto liga/desliga os pedais.";
         LoadFromConfig();
     }
 
     private void SetEffectsEnabled(bool on)
     {
-        foreach (var cmb in _fx)
+        foreach (var pedal in _pedals)
         {
-            cmb.Enabled = on && _usb.IsConnected;
+            if (pedal is not null)
+            {
+                pedal.Enabled = on && _usb.IsConnected;
+            }
         }
     }
 
@@ -301,13 +395,8 @@ public partial class FormChocolateMatribox : Form
         {
             lstPatches.SelectedIndex = -1;
             chkStomp.Checked = false;
-            foreach (var cmb in _fx)
-            {
-                cmb.SelectedIndex = 0;
-            }
-
             SetEffectsEnabled(false);
-            ApplyPatchChainToLabels();
+            RefreshPedalStrip();
             UpdateHint();
             _loading = false;
             return;
@@ -333,16 +422,7 @@ public partial class FormChocolateMatribox : Form
         }
 
         chkStomp.Checked = MatriboxMidi.HasStomp(group.A.ShortPress);
-        ApplyPatchChainToLabels();
-        var chain = CurrentPatchChain();
-        var cmds = SwitchCommands(CurrentSwitch());
-        for (int i = 0; i < _fx.Length; i++)
-        {
-            int stored = MatriboxMidi.EffectChoice(cmds, i);
-            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
-            _fx[i].SelectedIndex = stored != 0 && stored == preset ? 0 : stored;
-        }
-
+        RefreshPedalStrip();
         UpdateHint();
         _loading = false;
     }
@@ -351,42 +431,6 @@ public partial class FormChocolateMatribox : Form
     {
         int index = SelectedPresetIndex;
         return index >= 0 && index < _presets.Count ? _presets[index].Chain : null;
-    }
-
-    private static string EffectCaption(IReadOnlyList<MatriboxChainSlot>? chain, int moduleIndex)
-    {
-        if (chain is { Count: > 0 } && moduleIndex < chain.Count && !chain[moduleIndex].Empty)
-        {
-            return chain[moduleIndex].EffectName;
-        }
-
-        return $"Slot {moduleIndex + 1}";
-    }
-
-    private void ApplyPatchChainToLabels()
-    {
-        var chain = CurrentPatchChain();
-        bool prev = _loading;
-        _loading = true;
-        for (int i = 0; i < _fxLabels.Length; i++)
-        {
-            string name = EffectCaption(chain, i);
-            if (chain is { Count: > 0 } && i < chain.Count && !chain[i].Empty)
-            {
-                _fxLabels[i].Text = chain[i].Label;
-            }
-            else
-            {
-                _fxLabels[i].Text = $"--  (CC {MatriboxMidi.ModuleCc(i)})";
-            }
-
-            int keep = _fx[i].SelectedIndex;
-            _fx[i].Items.Clear();
-            _fx[i].Items.AddRange([$"Não enviar · {name}", $"Off · {name}", $"On · {name}"]);
-            _fx[i].SelectedIndex = keep is >= 0 and <= 2 ? keep : 0;
-        }
-
-        _loading = prev;
     }
 
     private void UpdateHint()
@@ -408,8 +452,8 @@ public partial class FormChocolateMatribox : Form
         }
 
         lblChocoHint.Text = _switchIndex == 0
-            ? $"A · curto → efeitos  ·  A · longo → {patch}."
-            : $"A · longo → {patch}  ·  {(char)('A' + _switchIndex)} · curto manda os On/Off da lista.";
+            ? $"A · curto → pedais  ·  A · longo → {patch}."
+            : $"A · longo → {patch}  ·  {(char)('A' + _switchIndex)} · curto liga/desliga os pedais.";
     }
 
     private void CommitCurrentSwitch()
@@ -492,16 +536,7 @@ public partial class FormChocolateMatribox : Form
     }
 
     private void ApplyMatriboxChainStatesToCombos()
-    {
-        bool prev = _loading;
-        _loading = true;
-        for (int i = 0; i < _fx.Length; i++)
-        {
-            _fx[i].SelectedIndex = 0;
-        }
-
-        _loading = prev;
-    }
+        => RefreshPedalStrip(fromChocolateMapping: false);
 
     private void ApplyNewMatriboxPatch(Bank group)
     {
@@ -528,21 +563,22 @@ public partial class FormChocolateMatribox : Form
     {
         var chain = CurrentPatchChain();
         var list = new List<MidiCommand>();
-        for (int i = 0; i < _fx.Length; i++)
+        for (int i = 0; i < _pedals.Length; i++)
         {
-            int sel = _fx[i].SelectedIndex;
-            if (sel is not (1 or 2))
+            var pedal = _pedals[i];
+            if (pedal is null)
             {
                 continue;
             }
 
+            int want = pedal.Engaged ? 2 : 1;
             int preset = MatriboxMidi.PresetEffectChoice(chain, i);
-            if (preset != 0 && sel == preset)
+            if (preset != 0 && want == preset)
             {
                 continue;
             }
 
-            list.Add(MatriboxMidi.ModuleOnOff(i, sel == 2, channel));
+            list.Add(MatriboxMidi.ModuleOnOff(i, pedal.Engaged, channel));
         }
 
         return list;
@@ -624,7 +660,7 @@ public partial class FormChocolateMatribox : Form
 
     private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
     {
-        ApplyPatchChainToLabels();
+        RefreshPedalStrip();
         if (_loading || !TryCurrentGroup(out var group))
         {
             return;
@@ -655,7 +691,7 @@ public partial class FormChocolateMatribox : Form
             {
                 _loading = true;
                 lstPatches.SelectedIndex = oldPreset + 1;
-                ApplyPatchChainToLabels();
+                RefreshPedalStrip();
                 _loading = false;
                 return;
             }
@@ -680,7 +716,7 @@ public partial class FormChocolateMatribox : Form
         SelectSwitch(0);
     }
 
-    private void chkStomp_CheckedChanged(object sender, EventArgs e) => CommitCurrentSwitch();
+    private void chkStomp_CheckedChanged(object sender) => CommitCurrentSwitch();
 
     private void numChannel_ValueChanged(object sender, EventArgs e) => CommitCurrentSwitch();
 
@@ -691,13 +727,13 @@ public partial class FormChocolateMatribox : Form
         if (_usb.IsConnected)
         {
             _usb.Disconnect();
-            btnConnect.Text = "Conectar";
             _loading = true;
             FillChocolateBanks();
             _loading = false;
             LoadFromConfig();
             StyleSave(false);
             SetWorkspaceEnabled(false);
+            StyleConnect();
             return;
         }
 
@@ -713,7 +749,6 @@ public partial class FormChocolateMatribox : Form
             UseWaitCursor = true;
             _usb.Connect(name);
             await _usb.HandshakeAsync();
-            btnConnect.Text = "Desligar";
             _config = await _usb.ReadConfigurationAsync();
             _loading = true;
             FillChocolateBanks();
@@ -722,12 +757,13 @@ public partial class FormChocolateMatribox : Form
             bool slimmed = SlimRedundantEffects();
             LoadFromConfig();
             StyleSave(slimmed);
+            StyleConnect();
         }
         catch (Exception ex)
         {
             _usb.Disconnect();
-            btnConnect.Text = "Conectar";
             SetWorkspaceEnabled(false);
+            StyleConnect();
             MessageBox.Show(this, ex.Message, "Chocolate USB", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         finally

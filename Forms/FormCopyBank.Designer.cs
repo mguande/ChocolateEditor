@@ -1,3 +1,5 @@
+using ForeverButton = ReaLTaiizor.Controls.ForeverButton;
+
 namespace ChocolateEditor.Forms;
 
 partial class FormCopyBank
@@ -32,8 +34,8 @@ partial class FormCopyBank
         grpMessages = new GroupBox();
         chkShort = new CheckBox();
         chkLong = new CheckBox();
-        btnOk = new Button();
-        btnCancel = new Button();
+        btnOk = new ForeverButton();
+        btnCancel = new ForeverButton();
         lblHint = new Label();
         grpSwitches.SuspendLayout();
         grpMessages.SuspendLayout();
@@ -202,30 +204,30 @@ partial class FormCopyBank
         //
         // btnOk
         //
-        btnOk.Location = new Point(204, 328);
+        btnOk.Location = new Point(196, 328);
         btnOk.Name = "btnOk";
-        btnOk.Size = new Size(85, 28);
+        btnOk.Rounded = true;
+        btnOk.Size = new Size(92, 32);
         btnOk.TabIndex = 10;
         btnOk.Text = "Copiar";
-        btnOk.UseVisualStyleBackColor = true;
+        btnOk.TextColor = Color.White;
         btnOk.Click += btnOk_Click;
         //
         // btnCancel
         //
-        btnCancel.DialogResult = DialogResult.Cancel;
-        btnCancel.Location = new Point(295, 328);
+        btnCancel.Location = new Point(294, 328);
         btnCancel.Name = "btnCancel";
-        btnCancel.Size = new Size(85, 28);
+        btnCancel.Rounded = true;
+        btnCancel.Size = new Size(88, 32);
         btnCancel.TabIndex = 11;
         btnCancel.Text = "Cancelar";
-        btnCancel.UseVisualStyleBackColor = true;
+        btnCancel.TextColor = Color.White;
+        btnCancel.Click += btnCancel_Click;
         //
         // FormCopyBank
         //
-        AcceptButton = btnOk;
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        CancelButton = btnCancel;
         ClientSize = new Size(398, 372);
         Controls.Add(lblFrom);
         Controls.Add(cmbFrom);
@@ -271,7 +273,7 @@ partial class FormCopyBank
     private GroupBox grpMessages;
     private CheckBox chkShort;
     private CheckBox chkLong;
-    private Button btnOk;
-    private Button btnCancel;
+    private ForeverButton btnOk;
+    private ForeverButton btnCancel;
     private Label lblHint;
 }
