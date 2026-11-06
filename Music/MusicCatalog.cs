@@ -19,7 +19,7 @@ public static class MusicCatalog
 
     static MusicCatalog()
     {
-        Http.DefaultRequestHeaders.UserAgent.ParseAdd("ChocolatePlusEditor/1.3.0");
+        Http.DefaultRequestHeaders.UserAgent.ParseAdd("ChocolatePlusEditor/1.3.1");
         Http.DefaultRequestHeaders.Accept.ParseAdd("application/json");
     }
 

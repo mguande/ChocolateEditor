@@ -659,9 +659,108 @@ public partial class FormChocolateMatribox : Form
                 _loading = false;
                 return;
             }
+
+            var keep = MessageBox.Show(
+                this,
+                "Manter as configurações de efeitos do Chocolate para o banco novo da Matribox?\n\n" +
+                "Sim: A, B, C e D continuam com os mesmos On/Off. Só muda o banco da Matribox para onde este banco do Chocolate envia.\n\n" +
+                "Não: as configurações de efeitos são substituídas.",
+                Text,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1);
+            if (keep == DialogResult.Yes)
+            {
+                KeepEffectsAndRetarget(group, oldPreset);
+                return;
+            }
         }
 
         ApplyNewMatriboxPatch(group);
+    }
+
+    private void KeepEffectsAndRetarget(Bank group, int oldPresetIndex)
+    {
+        var oldChain = oldPresetIndex >= 0 && oldPresetIndex < _presets.Count
+            ? _presets[oldPresetIndex].Chain
+            : null;
+        var newChain = CurrentPatchChain();
+        int channel = (int)numChannel.Value;
+        int[] visible = _fx.Select(c => c.SelectedIndex).ToArray();
+        FootswitchConfig current = CurrentSwitch();
+
+        foreach (var sw in group.Switches)
+        {
+            int[] choices = ReferenceEquals(sw, current)
+                ? visible
+                : ChoicesFromCommands(sw.ShortPress, oldChain);
+            var kept = sw.ShortPress.Where(c => !IsEffectCc(c)).Select(c => c.Clone()).ToList();
+            kept.AddRange(EffectsFromChoices(choices, newChain, channel));
+            sw.ShortPress = kept;
+        }
+
+        int index = SelectedPresetIndex;
+        if (index < 0)
+        {
+            group.A.LongPress = [];
+            group.Name = UnconfiguredLabel;
+        }
+        else
+        {
+            int bank = index / 4 + 1;
+            int slot = index % 4;
+            group.A.LongPress = MatriboxMidi.SelectPreset(bank, slot, channel);
+            group.Name = $"Matribox {bank:00}";
+        }
+
+        bool prev = _loading;
+        _loading = true;
+        for (int i = 0; i < _fx.Length && i < visible.Length; i++)
+        {
+            _fx[i].SelectedIndex = visible[i];
+        }
+
+        _loading = prev;
+        RefreshBankComboLabel(group);
+        UpdateHint();
+        StyleSave(true);
+    }
+
+    private static int[] ChoicesFromCommands(List<MidiCommand> commands, IReadOnlyList<MatriboxChainSlot>? chain)
+    {
+        var choices = new int[HotoneSysex.SlotCount];
+        for (int i = 0; i < choices.Length; i++)
+        {
+            int stored = MatriboxMidi.EffectChoice(commands, i);
+            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
+            choices[i] = stored != 0 && stored == preset ? 0 : stored;
+        }
+
+        return choices;
+    }
+
+    private static List<MidiCommand> EffectsFromChoices(
+        int[] choices, IReadOnlyList<MatriboxChainSlot>? chain, int channel)
+    {
+        var list = new List<MidiCommand>();
+        for (int i = 0; i < choices.Length; i++)
+        {
+            int sel = choices[i];
+            if (sel is not (1 or 2))
+            {
+                continue;
+            }
+
+            int preset = MatriboxMidi.PresetEffectChoice(chain, i);
+            if (preset != 0 && sel == preset)
+            {
+                continue;
+            }
+
+            list.Add(MatriboxMidi.ModuleOnOff(i, sel == 2, channel));
+        }
+
+        return list;
     }
 
     private void cmbChocoBank_SelectedIndexChanged(object sender, EventArgs e)

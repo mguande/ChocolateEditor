@@ -2,7 +2,7 @@
 
 Editor Windows (gratuito) para o pedal **M-VAVE Chocolate Plus** (`FootCtrlPlus`) e para cenas da **Sonicake Matribox II Pro**. Serve para ler, editar, copiar bancos e gravar a configuração no Chocolate por **USB MIDI**, mapear switches para patches/efeitos da Matribox, e gerar patches com IA.
 
-**Versão 1.3.0** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
+**Versão 1.3.1** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
 
 ## Download
 
