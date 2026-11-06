@@ -13,6 +13,8 @@ public sealed class AiSettings
     public AiProvider LastProvider { get; set; } = AiProvider.ChatGpt;
     public bool IncludeMatriboxManual { get; set; }
     public bool SetupCompleted { get; set; }
+    public string PatchInstruction { get; set; } = "";
+    public string PrstFolder { get; set; } = "";
 
     public bool HasAnyKey()
         => HasKey(AiProvider.ChatGpt) || HasKey(AiProvider.Claude) || HasKey(AiProvider.Gemini);

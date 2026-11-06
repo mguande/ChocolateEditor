@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using ChocolateEditor.Ai;
 
 namespace ChocolateEditor.Matribox;
 
@@ -24,7 +25,33 @@ public static class MatriboxPrstImport
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     public static string? FirstExistingDefaultFolder()
-        => DefaultFolders.FirstOrDefault(Directory.Exists);
+    {
+        string custom = ConfiguredFolder();
+        if (custom.Length > 0 && Directory.Exists(custom))
+        {
+            return custom;
+        }
+
+        return DefaultFolders.FirstOrDefault(Directory.Exists);
+    }
+
+    public static IEnumerable<string> TemplateFolders()
+    {
+        string custom = ConfiguredFolder();
+        if (custom.Length > 0)
+        {
+            yield return custom;
+            yield break;
+        }
+
+        foreach (string folder in DefaultFolders)
+        {
+            yield return folder;
+        }
+    }
+
+    public static string ConfiguredFolder()
+        => AiSettingsStore.Load().PrstFolder.Trim();
 
     public static int ImportFolder(string folder, List<MatriboxPresetInfo> into)
     {

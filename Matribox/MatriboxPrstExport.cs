@@ -9,8 +9,13 @@ public static class MatriboxPrstExport
     {
         if (!TryLoadTemplate(out byte[] raw))
         {
+            string custom = MatriboxPrstImport.ConfiguredFolder();
+            string where = custom.Length > 0
+                ? custom
+                : "uma das pastas padrão do Sonicake";
             throw new InvalidOperationException(
-                "Não encontrei um .prst de modelo. Importa os patches no editor Sonicake (pasta Patchs) e tenta outra vez.");
+                "Não encontrei um .prst de modelo em:\n" + where
+                + "\n\nEm Configurar, aba Patches, aponta a pasta Patchs do editor Sonicake.");
         }
 
         PatchRaw(raw, draft);
@@ -28,7 +33,7 @@ public static class MatriboxPrstExport
     private static bool TryLoadTemplate(out byte[] raw)
     {
         raw = [];
-        foreach (string folder in MatriboxPrstImport.DefaultFolders.Where(Directory.Exists))
+        foreach (string folder in MatriboxPrstImport.TemplateFolders().Where(Directory.Exists))
         {
             foreach (string file in Directory.EnumerateFiles(folder, "*.prst"))
             {
