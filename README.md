@@ -2,11 +2,13 @@
 
 Editor Windows (gratuito) para o pedal **M-VAVE Chocolate Plus** (`FootCtrlPlus`) e para cenas da **Sonicake Matribox II Pro**. Serve para ler, editar, copiar bancos e gravar a configuração no Chocolate por **USB MIDI**, mapear switches para patches/efeitos da Matribox, e gerar patches com IA.
 
-**Versão 1.2.1** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
+**Versão 1.3.0** · **Windows 10/11 64-bit** · não precisa de instalar o .NET · um único ficheiro para descarregar
 
 ## Download
 
 **[Descarregar ChocolatePlusEditor.exe](https://github.com/mguande/ChocolateEditor/releases/latest/download/ChocolatePlusEditor.exe)** — um só ficheiro (~50 MB), Windows 10/11 64-bit. Não precisa de instalar o .NET: descarrega e abre.
+
+**[Instalador ChocolatePlusEditor-Setup.exe](https://github.com/mguande/ChocolateEditor/releases/latest/download/ChocolatePlusEditor-Setup.exe)** — instala o mesmo programa no menu Iniciar.
 
 Todas as versões: [Releases](https://github.com/mguande/ChocolateEditor/releases/latest)
 
@@ -25,7 +27,7 @@ O Windows pode avisar que a app não é reconhecida (não está assinada). Escol
 - Modos do CubeSuite (1–12), incluindo **Advanced Custom 1 e 2**
 - **Chocolate × Matribox**: mapeia bancos/patches (PC 0-based) e liga/desliga os 12 módulos (CC 43–54). O ecrã só desbloqueia depois de ligar o Chocolate
 - **Configuração Matribox**: importa `.prst` da Sonicake (nomes, cadeia, On/Off)
-- **Prompt IA**: ChatGPT, Claude ou Gemini geram um patch Matribox (cadeia visual + knobs) e podes guardar `.prst`
+- **Prompt IA**: ChatGPT, Claude ou Gemini geram um patch Matribox (cadeia visual + knobs) e podes guardar `.prst`. Também podes copiar o prompt para outra IA, colar a resposta e montar o patch. A banda, o álbum e a música pesquisam-se na base do iTunes. As instruções e a pasta dos `.prst` configuram-se em Configurar
 
 Não substitui o firmware. É um editor da memória USB, no espírito do [CubeSuite](http://www.m-vave.com/appdownload) oficial. MIDI da Matribox conforme o [manual firmware 1.2.2](https://sonicake.oss-accelerate.aliyuncs.com/res/JIyz39IVZe/Matribox_II_PRO_Online_Manual_EN_Firmware_V1.2.2.pdf).
 
