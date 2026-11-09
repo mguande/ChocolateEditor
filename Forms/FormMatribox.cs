@@ -109,7 +109,7 @@ public partial class FormMatribox : Form
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Dock = DockStyle.Fill
             };
-            cmb.Items.AddRange(["Não enviar", "Off", "On"]);
+            cmb.Items.AddRange(["Off", "On"]);
             cmb.SelectedIndex = 0;
             cmb.SelectedIndexChanged += (_, _) => RefreshPreview();
             _fx[i] = cmb;
@@ -183,7 +183,7 @@ public partial class FormMatribox : Form
             if (i < chain.Count && !chain[i].Empty)
             {
                 _fxLabels[i].Text = chain[i].Label;
-                _fx[i].SelectedIndex = chain[i].On ? 2 : 1;
+                _fx[i].SelectedIndex = chain[i].On ? 1 : 0;
             }
             else
             {
@@ -285,15 +285,7 @@ public partial class FormMatribox : Form
 
         for (int i = 0; i < _fx.Length; i++)
         {
-            int sel = _fx[i].SelectedIndex;
-            if (sel == 1)
-            {
-                list.Add(MatriboxMidi.ModuleOnOff(i, false, ch));
-            }
-            else if (sel == 2)
-            {
-                list.Add(MatriboxMidi.ModuleOnOff(i, true, ch));
-            }
+            list.Add(MatriboxMidi.ModuleOnOff(i, _fx[i].SelectedIndex == 1, ch));
         }
 
         return list;
@@ -533,7 +525,7 @@ public partial class FormMatribox : Form
     {
         foreach (var cmb in _fx)
         {
-            cmb.SelectedIndex = 2;
+            cmb.SelectedIndex = 1;
         }
     }
 
@@ -541,7 +533,7 @@ public partial class FormMatribox : Form
     {
         foreach (var cmb in _fx)
         {
-            cmb.SelectedIndex = 1;
+            cmb.SelectedIndex = 0;
         }
     }
 

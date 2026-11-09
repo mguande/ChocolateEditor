@@ -98,6 +98,12 @@ public static class ChocolateMemoryMap
                 sw.LongPress.Clear();
                 if (TryOffsets(g, s, dump.Length, out int aOff, out int bOff))
                 {
+                    int behOff = aOff - 1;
+                    if (behOff >= 0 && behOff < dump.Length && dump[behOff] <= (byte)SwitchBehavior.ShortAndLong)
+                    {
+                        sw.Behavior = (SwitchBehavior)dump[behOff];
+                    }
+
                     sw.ShortPress = UnpackAt(dump, aOff);
                     sw.LongPress = UnpackAt(dump, bOff);
                 }

@@ -35,6 +35,9 @@ partial class FormChocolateMatribox
         btnSwD = new Button();
         lblChocoHint = new Label();
         chkStomp = new CheckBox();
+        lblMode = new Label();
+        cmbMode = new ComboBox();
+        chkBankOnly = new CheckBox();
         panelMatribox = new Panel();
         tabMatribox = new Label();
         splitMatribox = new SplitContainer();
@@ -161,6 +164,9 @@ partial class FormChocolateMatribox
         // 
         // panelChoco
         // 
+        panelChoco.Controls.Add(chkBankOnly);
+        panelChoco.Controls.Add(cmbMode);
+        panelChoco.Controls.Add(lblMode);
         panelChoco.Controls.Add(chkStomp);
         panelChoco.Controls.Add(lblChocoHint);
         panelChoco.Controls.Add(btnSwD);
@@ -174,7 +180,7 @@ partial class FormChocolateMatribox
         panelChoco.Location = new Point(0, 64);
         panelChoco.Name = "panelChoco";
         panelChoco.Padding = new Padding(20, 16, 20, 12);
-        panelChoco.Size = new Size(1100, 168);
+        panelChoco.Size = new Size(1100, 176);
         panelChoco.TabIndex = 1;
         // 
         // tabChoco
@@ -268,6 +274,43 @@ partial class FormChocolateMatribox
         chkStomp.TabIndex = 8;
         chkStomp.Text = "Stomp Mode (CC 29) no toque curto do A";
         chkStomp.CheckedChanged += chkStomp_CheckedChanged;
+        // 
+        // lblMode
+        // 
+        lblMode.AutoSize = true;
+        lblMode.Location = new Point(24, 136);
+        lblMode.Name = "lblMode";
+        lblMode.Size = new Size(40, 15);
+        lblMode.TabIndex = 9;
+        lblMode.Text = "Modo";
+        // 
+        // cmbMode
+        // 
+        cmbMode.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbMode.Location = new Point(80, 132);
+        cmbMode.Name = "cmbMode";
+        cmbMode.Size = new Size(520, 23);
+        cmbMode.TabIndex = 10;
+        cmbMode.Items.AddRange(new object[]
+        {
+            "Single step (single Bank information)",
+            "Single step (switch between two Banks)",
+            "Press down - release (Two sets of information)",
+            "Long step",
+            "Step short or step long"
+        });
+        cmbMode.SelectedIndex = 4;
+        cmbMode.SelectedIndexChanged += cmbMode_SelectedIndexChanged;
+        // 
+        // chkBankOnly
+        // 
+        chkBankOnly.AutoSize = true;
+        chkBankOnly.Location = new Point(620, 134);
+        chkBankOnly.Name = "chkBankOnly";
+        chkBankOnly.Size = new Size(160, 19);
+        chkBankOnly.TabIndex = 11;
+        chkBankOnly.Text = "Só selecionar o banco";
+        chkBankOnly.CheckedChanged += chkBankOnly_CheckedChanged;
         // 
         // panelMatribox
         // 
@@ -375,7 +418,7 @@ partial class FormChocolateMatribox
         lblFxHint.Name = "lblFxHint";
         lblFxHint.Size = new Size(628, 36);
         lblFxHint.TabIndex = 1;
-        lblFxHint.Text = "Toque curto: só manda o que for diferente do patch. Não enviar = estado da Matribox.";
+        lblFxHint.Text = "Cada efeito fica Off ou On. O toque curto envia o estado de todos.";
         // 
         // panelFxScroll
         // 
@@ -446,6 +489,9 @@ partial class FormChocolateMatribox
     private Button btnSwD;
     private Label lblChocoHint;
     private CheckBox chkStomp;
+    private Label lblMode;
+    private ComboBox cmbMode;
+    private CheckBox chkBankOnly;
     private Panel panelMatribox;
     private Label tabMatribox;
     private SplitContainer splitMatribox;
